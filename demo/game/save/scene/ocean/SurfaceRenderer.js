@@ -34,6 +34,10 @@ export default class SurfaceRenderer extends SvgRenderer {
 	drawSurface() {
 		if (this.line) this.line.remove();
 		const y = this.game.viewBoxSize.multiply(0.5).y - this.model.coordinates.y;
+		const isInView = (y > 0 && y < this.game.viewBoxSize.y);
+
+		if (!isInView) return;
+
 		this.line = this.drawLine(
 			this.group,
 			new Vector2(0, y),

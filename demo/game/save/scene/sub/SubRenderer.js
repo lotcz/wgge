@@ -29,7 +29,7 @@ export default class SubRenderer extends SvgRenderer {
 			80,
 			50,
 			{width: 2, color: 'black'},
-			'rgba(110, 150, 175, 0.7)'
+			'rgba(110, 150, 175, 1)'
 		);
 	}
 
