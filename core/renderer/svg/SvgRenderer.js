@@ -79,6 +79,7 @@ export default class SvgRenderer extends RendererBase {
 
 	/**
 	 *
+	 * @param {SVG.Container|null|undefined} parent
 	 * @param {Vector2} center
 	 * @param {Number} width
 	 * @param {Number} height
@@ -87,12 +88,44 @@ export default class SvgRenderer extends RendererBase {
 	 *
 	 * @returns SVG.Ellipse
 	 */
-	drawEllipse(center, width = 3, height = 2, stroke = {width: 1, color: 'gray'}, fill = 'transparent') {
-		return this.draw
+	drawEllipse(
+		parent,
+		center,
+		width = 3,
+		height = 2,
+		stroke = {width: 1, color: 'gray'},
+		fill = 'transparent'
+	) {
+		if (!parent) parent = this.draw;
+		return parent
 			.ellipse(width, height)
 			.stroke(stroke)
 			.fill(fill)
 			.move(center.x, center.y);
+	}
+
+	/**
+	 *
+	 * @param {SVG.Container|null|undefined} parent
+	 * @param {Vector2} start
+	 * @param {Vector2} end
+	 * @param {object|SVG.StrokeData} stroke
+	 * @param {string|Color|SVG.FillData} fill
+	 *
+	 * @returns SVG.Line
+	 */
+	drawLine(
+		parent,
+		start,
+		end = 3,
+		stroke = {width: 1, color: 'black'},
+		fill = 'transparent'
+	) {
+		if (!parent) parent = this.draw;
+		return parent
+			.line(start.x, start.y, end.x, end.y)
+			.stroke(stroke)
+			.fill(fill);
 	}
 
 }

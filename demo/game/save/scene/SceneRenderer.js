@@ -3,6 +3,7 @@ import DOMHelper from "../../../../core/helper/DOMHelper";
 import DomRenderer from "../../../../core/renderer/dom/DomRenderer";
 import {SVG} from "@svgdotjs/svg.js";
 import WaterRenderer from "./ocean/WaterRenderer";
+import SurfaceRenderer from "./ocean/SurfaceRenderer";
 
 export default class SceneRenderer extends DomRenderer {
 
@@ -29,24 +30,28 @@ export default class SceneRenderer extends DomRenderer {
 
 		const ocean = DOMHelper.createElement(this.container, 'div', 'ocean container');
 		this.oceanCanvas = DOMHelper.createElement(ocean, 'canvas');
-		const sub = DOMHelper.createElement(this.container, 'div', 'sub container container-host');
-		this.subDraw = SVG().addTo(sub);
 
 		this.addChild(new WaterRenderer(this.game, this.model, this.oceanCanvas));
-		this.addChild(new SubRenderer(this.game, this.model, this.subDraw));
+
+		const svg = DOMHelper.createElement(this.container, 'div', 'sub container container-host');
+		this.draw = SVG().addTo(svg);
+
+		this.addChild(new SubRenderer(this.game, this.model, this.draw));
+		this.addChild(new SurfaceRenderer(this.game, this.model, this.draw));
 	}
 
 	deactivateInternal() {
 		this.resetChildren();
 		this.removeElement(this.container);
 		this.container = null;
+		this.draw = null;
 	}
 
 	resize() {
 		this.oceanCanvas.width = this.game.viewBoxSize.x;
 		this.oceanCanvas.height = this.game.viewBoxSize.y;
 
-		this.subDraw.size(this.game.viewBoxSize.x, this.game.viewBoxSize.y);
+		this.draw.size(this.game.viewBoxSize.x, this.game.viewBoxSize.y);
 	}
 
 }
