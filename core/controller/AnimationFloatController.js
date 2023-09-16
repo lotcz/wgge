@@ -1,6 +1,6 @@
-import AnimatedValue from "../animating/AnimatedValue";
-import {EASING_FLAT} from "../animating/ProgressValue";
 import AnimationController from "./AnimationController";
+import {EASING_FLAT} from "../animation/ProgressValue";
+import AnimatedValue from "../animation/AnimatedValue";
 
 export default class AnimationFloatController extends AnimationController {
 

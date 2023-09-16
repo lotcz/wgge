@@ -1,4 +1,6 @@
 import ControllerBase from "../../../../core/controller/ControllerBase";
+import CollectionController from "../../../../core/controller/CollectionController";
+import TankController from "./tank/TankController";
 
 export default class SubController extends ControllerBase {
 
@@ -11,6 +13,26 @@ export default class SubController extends ControllerBase {
 		super(game, model);
 
 		this.model = model;
+
+		this.addChild(
+			new TankController(this.game, this.model)
+		);
+
+		this.addChild(
+			new CollectionController(
+				this.game,
+				this.model.oxygenTanks,
+				(m) => new TankController(this.game, m)
+			)
+		);
+
+		this.addChild(
+			new CollectionController(
+				this.game,
+				this.model.waterTanks,
+				(m) => new TankController(this.game, m)
+			)
+		);
 
 		this.addAutoEvent(
 			this.game.viewBoxSize,

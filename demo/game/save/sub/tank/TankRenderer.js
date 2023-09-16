@@ -1,5 +1,6 @@
 import SvgRenderer from "../../../../../core/renderer/svg/SvgRenderer";
 import ProgressVector3 from "../../../../../core/animation/3d/ProgressVector3";
+import Vector2 from "../../../../../core/model/vector/Vector2";
 
 export default class TankRenderer extends SvgRenderer {
 
@@ -18,6 +19,12 @@ export default class TankRenderer extends SvgRenderer {
 
 		this.model = model;
 		this.sub = sub;
+
+		this.addAutoEvent(
+			this.sub.center,
+			'change',
+			() => this.drawTank()
+		);
 	}
 
 	activateInternal() {
@@ -38,6 +45,8 @@ export default class TankRenderer extends SvgRenderer {
 	drawTank() {
 		if (this.ellipse) this.ellipse.remove();
 		if (this.filling) this.filling.remove();
+		if (this.exhaust) this.exhaust.remove();
+		if (this.clip) this.clip.remove();
 
 		let color;
 		if (this.model.content.isLiquid.get()) {
@@ -53,9 +62,21 @@ export default class TankRenderer extends SvgRenderer {
 			this.model.size,
 			{width: this.model.shape.strokeWidth.get(), color: this.model.shape.strokeColor.asRgbColor()},
 			color
+		).click(
+			() => this.model.triggerEvent('click')
 		);
 
-		if (this.model.content.isLiquid.get()) {
+		this.exhaust = this.drawEllipse(
+			this.group,
+			this.getPosition().sub(new Vector2(0, this.model.size.y * 0.5)),
+			this.model.size.multiply(0.3),
+			{width: this.model.shape.strokeWidth.get(), color: this.model.shape.strokeColor.asRgbColor()},
+			this.model.shape.color.asRgbColor()
+		).click(
+			() => this.model.triggerEvent('exhaust-click')
+		);
+
+		if (this.model.content.isLiquid.get() && this.model.capacity.get() > 0) {
 			const height = this.model.size.y * this.model.capacity.progress.get();
 			const top = this.model.size.y - height;
 
@@ -78,8 +99,8 @@ export default class TankRenderer extends SvgRenderer {
 				this.model.size
 			);
 
-			const clip = this.draw.clip().add(ellipse);
-			this.filling.clipWith(clip);
+			this.clip = this.group.clip().add(ellipse);
+			this.filling.clipWith(this.clip);
 		}
 	}
 

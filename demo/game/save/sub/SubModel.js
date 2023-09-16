@@ -51,14 +51,15 @@ export default class SubModel extends TankModel {
 		this.center = this.addProperty('center', new Vector2(0, 0, false));
 
 		this.waterTanks = this.addProperty('waterTanks', new ModelNodeCollection(() => new TankModel()));
-		this.waterTanks.add(new TankModel(5, 50, TANK_SHAPE_WATER, FLUID_WATER));
 		this.waterTanks.add(new TankModel(25, 50, TANK_SHAPE_WATER, FLUID_WATER));
+		this.waterTanks.add(new TankModel(5, 50, TANK_SHAPE_WATER, FLUID_WATER));
 		this.waterTanks.add(new TankModel(10, 50, TANK_SHAPE_WATER, FLUID_WATER));
 		this.oxygenTanks = this.addProperty('oxygenTanks', new ModelNodeCollection(() => new TankModel()));
-		this.oxygenTanks.add(new TankModel(0, 20, TANK_SHAPE_OXYGEN, FLUID_OXYGEN));
-		this.oxygenTanks.add(new TankModel(5, 20, TANK_SHAPE_OXYGEN, FLUID_OXYGEN));
-		this.oxygenTanks.add(new TankModel(10, 20, TANK_SHAPE_OXYGEN, FLUID_OXYGEN));
 		this.oxygenTanks.add(new TankModel(20, 20, TANK_SHAPE_OXYGEN, FLUID_OXYGEN));
+		this.oxygenTanks.add(new TankModel(15, 20, TANK_SHAPE_OXYGEN, FLUID_OXYGEN));
+		this.oxygenTanks.add(new TankModel(10, 20, TANK_SHAPE_OXYGEN, FLUID_OXYGEN));
+		this.oxygenTanks.add(new TankModel(0, 20, TANK_SHAPE_OXYGEN, FLUID_OXYGEN));
+		this.oxygenTanks.add(new TankModel(0, 20, TANK_SHAPE_OXYGEN, FLUID_OXYGEN));
 
 		this.subWeight = this.addProperty('subWeight', new FloatValue(10, false));
 

@@ -7,7 +7,7 @@ import DOMHelper from "../core/helper/DOMHelper";
 export default class EditorRenderer extends DomRenderer {
 
 	/**
-	 * @type DemoEditorModel
+	 * @type EditorModel
 	 */
 	model;
 

@@ -51,10 +51,5 @@ export default class SubRenderer extends SvgRenderer {
 		this.group = null;
 		super.deactivateInternal();
 	}
-
-	renderInternal() {
-		this.hull.center(this.model.center.x, this.model.center.y);
-		this.tanks.center(this.model.center.x, this.model.center.y);
-	}
-
+	
 }

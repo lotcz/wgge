@@ -20,6 +20,7 @@
 		input {
 			margin: 2px !important;
 		}
+
 		button {
 			background-color: gray !important;
 			color: black !important;
@@ -80,6 +81,7 @@
 	.editor {
 		background-color: transparent;
 		font-size: 10pt;
+		position: fixed;
 
 		.bg {
 			background-color: black;
@@ -94,9 +96,11 @@
 				color: lightblue;
 				cursor: pointer;
 			}
+
 			.active {
 				color: white;
 			}
+
 			li {
 				padding: 4px;
 				list-style: none;
@@ -133,16 +137,20 @@
 				border: 1px white solid;
 				cursor: default;
 			}
+
 			&:hover {
 				background-color: lightblue;
 			}
+
 			&.special {
 				background-color: @light-brown;
 				color: @dark-brown;
 			}
+
 			&.red {
 				background-color: red;
 			}
+
 			&.blue {
 				background-color: lightblue;
 			}
@@ -170,7 +178,7 @@
 			opacity: 0.5;
 
 			&::after {
-			content: "■";
+				content: "■";
 			}
 		}
 
@@ -263,18 +271,18 @@
 			padding: @m-2;
 
 			input[type=text] {
-			width: 50px;
+				width: 50px;
 			}
 
 			input[type=radio] {
-			margin: 0;
-			padding: @m-1;
-			display: inline-block;
+				margin: 0;
+				padding: @m-1;
+				display: inline-block;
 			}
 
 			label {
-			padding: @m-1;
-			display: inline-block;
+				padding: @m-1;
+				display: inline-block;
 			}
 		}
 
