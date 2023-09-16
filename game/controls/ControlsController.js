@@ -36,8 +36,8 @@ export default class ControlsController extends ControllerBase {
 		//this.caps = event.getModifierState("CapsLock");
 		//console.log(event);
 		const key = event.keyCode ? event.keyCode : event.charCode;
-		console.log(key);
-		
+		//console.log(key);
+
 		switch (key) {
 			case 13: /*Enter*/
 				//this.model.interacting.set(true);

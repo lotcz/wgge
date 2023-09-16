@@ -1,5 +1,6 @@
 import RendererBase from "../RendererBase";
 import StringHelper from "../../helper/StringHelper";
+import Vector2 from "../../model/vector/Vector2";
 
 export default class SvgRenderer extends RendererBase {
 
@@ -81,8 +82,7 @@ export default class SvgRenderer extends RendererBase {
 	 *
 	 * @param {SVG.Container|null|undefined} parent
 	 * @param {Vector2} center
-	 * @param {Number} width
-	 * @param {Number} height
+	 * @param {Vector2} size
 	 * @param {SVG.StrokeData} stroke
 	 * @param {string|Color|SVG.FillData} fill
 	 *
@@ -91,17 +91,16 @@ export default class SvgRenderer extends RendererBase {
 	drawEllipse(
 		parent,
 		center,
-		width = 3,
-		height = 2,
+		size = new Vector2(5, 2),
 		stroke = {width: 1, color: 'gray'},
 		fill = 'transparent'
 	) {
 		if (!parent) parent = this.draw;
 		return parent
-			.ellipse(width, height)
+			.ellipse(size.x, size.y)
 			.stroke(stroke)
 			.fill(fill)
-			.move(center.x, center.y);
+			.center(center.x, center.y);
 	}
 
 	/**

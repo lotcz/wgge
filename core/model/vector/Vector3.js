@@ -93,6 +93,6 @@ export default class Vector3 extends ObjectModel {
 	}
 
 	asRgbColor() {
-		return `rgb(${this.x}, ${this.y}, ${this.z})`;
+		return `rgb(${Math.round(this.x)}, ${Math.round(this.y)}, ${Math.round(this.z)})`;
 	}
 }

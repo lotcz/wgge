@@ -82,6 +82,10 @@ export default class Vector2 extends ObjectModel {
 		return new Vector2(this.x - v.x, this.y - v.y);
 	}
 
+	sub(v) {
+		return this.subtract(v);
+	}
+
 	toArray() {
 		return [this.x, this.y];
 	}

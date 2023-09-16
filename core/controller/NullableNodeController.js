@@ -3,7 +3,7 @@ import ControllerBase from "./ControllerBase";
 export default class NullableNodeController extends ControllerBase {
 
 	/**
-	 * @type NodeValue
+	 * @type NullableNode
 	 */
 	model;
 
