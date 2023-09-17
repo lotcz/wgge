@@ -1,6 +1,7 @@
 import RendererBase from "../RendererBase";
 import StringHelper from "../../helper/StringHelper";
 import Vector2 from "../../model/vector/Vector2";
+import {SVG} from "@svgdotjs/svg.js";
 
 export default class SvgRenderer extends RendererBase {
 

@@ -22,18 +22,6 @@ export default class GameController extends ControllerBase {
 		this.addChild(new EditorController(this.game, this.model.editor));
 
 		this.addAutoEvent(
-			this.model,
-			'new-game',
-			() => this.runOnUpdate(() => this.startNewGame())
-		);
-
-		this.addAutoEvent(
-			this.model,
-			'show-main-menu',
-			() => this.showMainMenu()
-		);
-
-		this.addAutoEvent(
 			window,
 			'resize',
 			() => {
@@ -65,17 +53,10 @@ export default class GameController extends ControllerBase {
 
 	}
 
-	activateInternal() {
-		this.loadResourcesFromStorage().then(() => {
-			this.model.resources.addOnDirtyListener(() => this.isResourcesDirty = true);
-			this.showMainMenu();
-		});
-	}
-
 	updateInternal(delta) {
 
 		// saving of resources during debugging
-		if (this.game.isInDebugMode.get()) {
+		if (this.model.isInDebugMode.get()) {
 			this.resourcesTimeOut = (this.resourcesTimeOut === null) ? 3000 : this.resourcesTimeOut - delta;
 			if (this.isResourcesDirty && this.resourcesTimeOut <= 0) {
 				this.resourcesTimeOut = null;

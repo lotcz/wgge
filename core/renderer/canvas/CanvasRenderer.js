@@ -56,5 +56,40 @@ export default class CanvasRenderer extends RendererBase {
 		this.drawRect(start, size, grd);
 	}
 
+	/**
+	 *
+	 * @param {Vector2} center
+	 * @param {Number} radius
+	 * @param {CanvasGradient|string} fill
+	 * @param {any} stroke
+	 * @param {Number} startAngle
+	 * @param {Number} endAngle
+	 */
+	drawArc(
+		center,
+		radius,
+		fill = 'white',
+		stroke = {width: 1, color: 'black'},
+		startAngle = 0,
+		endAngle = 2 * Math.PI
+	) {
+		this.context2d.beginPath();
+		this.context2d.fillStyle = (fill) ? fill : 'transparent';
+		this.context2d.strokeStyle = stroke ? stroke.color ? stroke.color : 'orange' : 'transparent';
+		this.context2d.lineWidth = stroke ? stroke.width ? stroke.width : 1 : 0;
+		this.context2d.arc(center.x, center.y, radius, startAngle, endAngle);
+		this.context2d.stroke();
+		this.context2d.fill();
+	}
 
+	/**
+	 *
+	 * @param {Vector2} center
+	 * @param {Number} radius
+	 * @param {CanvasGradient|string} fill
+	 * @param {any} stroke
+	 */
+	drawCircle(center, radius, fill, stroke) {
+		this.drawArc(center, radius, fill, stroke);
+	}
 }

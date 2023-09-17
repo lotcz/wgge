@@ -1,50 +1,73 @@
 import Stats from 'three/examples/jsm/libs/stats.module'
-import DemoGameModel from "./demo/game/DemoGameModel";
-import DemoGameController from "./demo/game/DemoGameController";
-import DemoGameRenderer from "./demo/game/DemoGameRenderer";
+import DOMHelper from "./core/helper/DOMHelper";
 
-const MAX_DELTA = 100;
-const DEBUG_MODE_ENABLED = true;
-const SHOW_STATS = false;
+export default class Wgge {
 
-const game = new DemoGameModel(DEBUG_MODE_ENABLED);
+	enabled = false;
+	lastTime = 0;
 
-const controller = new DemoGameController(game);
-controller.activate();
+	maxDelta;
+	debugModeEnabled;
+	showStats;
 
-const renderer = new DemoGameRenderer(game, window.document.body);
-renderer.activate();
-
-if (DEBUG_MODE_ENABLED) {
-	window['wegge'] = {
-		game,
+	constructor(
 		controller,
-		renderer
-	};
-}
+		renderer,
+		maxDelta = 100,
+		debugModeEnabled = true,
+		showStats = false
+	) {
+		this.controller = controller;
+		this.renderer = renderer;
+		this.maxDelta = maxDelta;
+		this.debugModeEnabled = debugModeEnabled;
+		this.showStats = showStats;
+		this.stats = null;
 
-const stats = SHOW_STATS ? new Stats() : false;
-if (stats) {
-	document.body.appendChild(stats.dom);
-}
-
-let lastTime = performance.now();
-
-const updateLoop = function () {
-	const time = performance.now();
-	const delta = time - lastTime;
-	lastTime = time;
-
-	if (delta < MAX_DELTA) {
-		controller.update(delta);
-		renderer.render();
+		this.updateLoopHandler = () => this.updateLoop();
 	}
 
-	if (stats) {
-		stats.update();
+	start() {
+		if (this.debugModeEnabled) {
+			window['wegge'] = this;
+		}
+		if (this.showStats) {
+			this.stats = new Stats();
+			document.body.appendChild(this.stats.dom);
+		}
+		this.enabled = true;
+		this.controller.activate();
+		this.renderer.activate();
+		this.lastTime = performance.now();
+		this.updateLoop();
 	}
 
-	requestAnimationFrame(updateLoop);
-}
+	stop() {
+		this.enabled = false;
+		this.controller.deactivate();
+		this.renderer.deactivate();
+		if (this.stats) {
+			DOMHelper.destroyElement(this.stats.dom);
+			this.stats = null;
+		}
+	}
 
-updateLoop();
+	updateLoop() {
+		if (!this.enabled) return;
+
+		const time = performance.now();
+		const delta = time - this.lastTime;
+		this.lastTime = time;
+
+		if (delta < this.maxDelta) {
+			this.controller.update(delta);
+			this.renderer.render();
+		}
+
+		if (this.showStats && this.stats) {
+			this.stats.update();
+		}
+
+		requestAnimationFrame(this.updateLoopHandler);
+	}
+}

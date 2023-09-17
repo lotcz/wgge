@@ -15,17 +15,15 @@ module.exports = {
 
 		new CopyWebpackPlugin({
 			patterns: [
-				{ from: './index.html', to: '' }
+				{from: './index.html', to: ''}
 			]
 		})
 
 	],
 	output: {
-		filename: '[name].bundle.js',
+		filename: 'wgge.js',
 		path: path.resolve(__dirname, 'build'),
 		clean: true,
 	},
-	module: {
-
-	}
+	module: {}
 };
