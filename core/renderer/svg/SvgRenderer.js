@@ -79,6 +79,14 @@ export default class SvgRenderer extends RendererBase {
 		element.remember('rotation', rotation);
 	}
 
+	scale(element, scale) {
+		if (scale.x !== undefined && scale.y !== undefined) {
+			element.scale(scale.x, scale.y);
+		} else {
+			element.scale(scale, scale);
+		}
+	}
+
 	/**
 	 *
 	 * @param {SVG.Container|null|undefined} parent

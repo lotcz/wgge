@@ -79,4 +79,8 @@ export default class Quaternion extends ObjectModel {
 		this.setFromArray(state);
 	}
 
+	asRgbaColor() {
+		return `rgba(${Math.round(this.x)}, ${Math.round(this.y)}, ${Math.round(this.z)}, ${Math.round(this.w)})`;
+	}
+
 }
