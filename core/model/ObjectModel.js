@@ -19,6 +19,9 @@ export default class ObjectModel extends ModelBase {
 	}
 
 	addProperty(name, property) {
+		if (this.properties.exists(name)) {
+			console.warn(`Property ${name} already set! Overriding.`);
+		}
 		return this.properties.add(name, property);
 	}
 

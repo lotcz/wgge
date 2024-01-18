@@ -33,29 +33,15 @@ export default class ControlsController extends ControllerBase {
 	}
 
 	onKeyDown(event) {
-		//this.caps = event.getModifierState("CapsLock");
-		//console.log(event);
 		const key = event.keyCode ? event.keyCode : event.charCode;
-		//console.log(key);
-
-		switch (key) {
-			case 13: /*Enter*/
-				//this.model.interacting.set(true);
-				break;
-			case 192: /*~*/ //this.model.triggerEvent('debug-key'); break;default:
-			default:
-				this.model.triggerEvent(`key-down-${key}`);
-		}
+		if (this.game.isInDebugMode.get()) console.log(key);
+		this.model.triggerEvent(`key-down-${key}`);
+		this.model.triggerEvent(`key-down`, key);
 	}
 
 	onKeyUp(event) {
-		//this.caps = event.getModifierState("CapsLock");
 		const key = event.keyCode ? event.keyCode : event.charCode;
-		//console.log("key:" + key);
 		switch (key) {
-			case 13: /*Enter*/
-				//this.model.interacting.set(false);
-				break;
 			case 27: /*Esc*/
 				this.model.triggerEvent('esc-key');
 				break;
@@ -64,7 +50,9 @@ export default class ControlsController extends ControllerBase {
 				break;
 			default:
 				this.model.triggerEvent(`key-up-${key}`);
+				this.model.triggerEvent(`key-up`, key);
 		}
+
 	}
 
 	onMouseMove(e) {

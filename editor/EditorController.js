@@ -129,7 +129,6 @@ export default class EditorController extends ControllerBase {
 	}
 
 	async saveResources() {
-		const str = JSON.stringify(this.game.resources.getState());
-		await HttpHelper.post('http://localhost:88/save-resources', str);
+		await HttpHelper.post('http://localhost:88/save-resources', this.game.resources.getState());
 	}
 }

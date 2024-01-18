@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import AssetLoader from "./AssetLoader";
-import NumberHelper from "../../../../core/helper/NumberHelper";
+import StringHelper from "../../../../core/helper/StringHelper";
 
 /**
  * Loads a single Sprite
@@ -9,7 +9,7 @@ export default class SpriteLoader extends AssetLoader {
 
 	loadInternal() {
 
-		const spriteId = NumberHelper.extractId(this.uri);
+		const spriteId = StringHelper.extractId(this.uri);
 		const sprite = this.assets.resources.sprites.getById(spriteId);
 
 		if (!sprite) {

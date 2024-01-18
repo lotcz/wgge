@@ -1,5 +1,5 @@
 import AssetLoader from "./AssetLoader";
-import NumberHelper from "../../../../core/helper/NumberHelper";
+import StringHelper from "../../../../core/helper/StringHelper";
 
 /**
  * Loads a 3d model
@@ -8,7 +8,7 @@ export default class Model3dLoader extends AssetLoader {
 
 	loadInternal() {
 
-		const id = NumberHelper.extractId(this.uri);
+		const id = StringHelper.extractId(this.uri);
 		const model = this.assets.resources.models3d.getById(id);
 
 		this.assets.getAsset(model.uri.get(), (gltf) => {

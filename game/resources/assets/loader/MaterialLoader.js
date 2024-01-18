@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import AssetLoader from "./AssetLoader";
-import NumberHelper from "../../../../core/helper/NumberHelper";
+import StringHelper from "../../../../core/helper/StringHelper";
 
 /**
  * Loads a single THREE material.
@@ -9,7 +9,7 @@ export default class MaterialLoader extends AssetLoader {
 
 	loadInternal() {
 
-		const id = NumberHelper.extractId(this.uri);
+		const id = StringHelper.extractId(this.uri);
 		const definition = this.assets.resources.materials.getById(id);
 		if (!definition) {
 			this.fail(`material ID ${this.uri} not found`);

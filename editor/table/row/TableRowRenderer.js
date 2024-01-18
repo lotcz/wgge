@@ -1,6 +1,7 @@
 import DomRenderer from "../../../core/renderer/dom/DomRenderer";
 import DOMHelper from "../../../core/helper/DOMHelper";
 import NumberHelper from "../../../core/helper/NumberHelper";
+import StringHelper from "../../../core/helper/StringHelper";
 
 export default class TableRowRenderer extends DomRenderer {
 
@@ -72,7 +73,7 @@ export default class TableRowRenderer extends DomRenderer {
 			if (value !== undefined && value !== null) {
 				if (typeof value === 'object') {
 					if (value.value !== undefined) {
-						text = NumberHelper.shorten(value.value);
+						text = StringHelper.shorten(value.value);
 					} else if (value.x !== undefined && value.y !== undefined) {
 						text = '[' + NumberHelper.round(value.x, 2) + ',' + NumberHelper.round(value.y, 2);
 						if (value.z !== undefined) {

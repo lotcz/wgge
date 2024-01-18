@@ -1,8 +1,8 @@
 export default class HttpHelper {
 
-	static async post(url, body) {
+	static async processRequest(url, body = null, method = 'GET') {
 		return fetch(url, {
-			method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			method: method,
 			mode: 'cors', // no-cors, *cors, same-origin
 			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
 			credentials: 'same-origin', // include, *same-origin, omit
@@ -11,8 +11,16 @@ export default class HttpHelper {
 			},
 			redirect: 'follow', // manual, *follow, error
 			referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-uri
-			body: body // body data type must match "Content-Type" header
+			body: body ? JSON.stringify(body) : null // body data type must match "Content-Type" header
 		});
+	}
+
+	static async get(url) {
+		return HttpHelper.processRequest(url)
+	}
+
+	static async post(url, body) {
+		return HttpHelper.processRequest(url, body, 'POST')
 	}
 
 	/**

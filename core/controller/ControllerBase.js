@@ -3,7 +3,7 @@ import ActivatedTreeNode from "../ActivatedTreeNode";
 export default class ControllerBase extends ActivatedTreeNode {
 
 	/**
-	 * @type DemoGameModel
+	 * @type GameModel
 	 */
 	game;
 
@@ -18,7 +18,7 @@ export default class ControllerBase extends ActivatedTreeNode {
 	updateActions;
 
 	/**
-	 * @param {DemoGameModel} game
+	 * @param {GameModel} game
 	 * @param {ObjectModel} model
 	 */
 	constructor(game, model) {

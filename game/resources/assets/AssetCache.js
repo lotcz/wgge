@@ -1,6 +1,5 @@
 import Dictionary from "../../../core/Dictionary";
 import Collection from "../../../core/Collection";
-import NumberHelper from "../../../core/helper/NumberHelper";
 import ImageLoader from "./loader/ImageLoader";
 import GlbLoader from "./loader/GlbLoader";
 import AudioLoader from "./loader/AudioLoader";
@@ -8,6 +7,7 @@ import MaterialLoader from "./loader/MaterialLoader";
 import Model3dLoader from "./loader/Model3dLoader";
 import SpriteLoader from "./loader/SpriteLoader";
 import NodeWithEvents from "../../../core/model/event/NodeWithEvents";
+import StringHelper from "../../../core/helper/StringHelper";
 
 const ASSET_TYPE_LOADERS = {
 	'aud': AudioLoader,
@@ -150,7 +150,7 @@ export default class AssetCache extends NodeWithEvents {
 				return;
 			}
 
-			const assetType = NumberHelper.extractId(uri, 0);
+			const assetType = StringHelper.extractId(uri, 0);
 			if (ASSET_TYPE_LOADERS[assetType] === undefined) {
 				console.error(`Valid resource type could not be inferred from URI '${uri}'!`);
 			}
