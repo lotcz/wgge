@@ -9,7 +9,7 @@ export default class ModelNodeTable extends ModelNodeCollection {
 		if (id === null || id === undefined || id === '') {
 			return null;
 		}
-		if (typeof id === 'object' && id.constructor.name === 'IntValue') {
+		if (typeof id === 'object' && typeof id.get === 'function') {
 			return this.getById(id.get());
 		}
 		const i = Number(id);

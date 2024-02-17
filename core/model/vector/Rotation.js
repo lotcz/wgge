@@ -30,12 +30,12 @@ export default class Rotation extends DirtyValue {
 		return degs * Math.PI / 180;
 	}
 
-	set(value) {
-		super.set(Rotation.normalizeValue(value));
+	set(rads) {
+		super.set(Rotation.normalizeValue(rads));
 	}
 
-	add(value) {
-		return new Rotation(this.get() + value);
+	add(rads) {
+		return new Rotation(this.get() + rads);
 	}
 
 	subtract(value) {
@@ -50,8 +50,8 @@ export default class Rotation extends DirtyValue {
 		return new Rotation(this.value);
 	}
 
-	setDegrees(value) {
-		this.set(Rotation.degToRad(value));
+	setDegrees(degs) {
+		this.set(Rotation.degToRad(degs));
 	}
 
 	getDegrees() {

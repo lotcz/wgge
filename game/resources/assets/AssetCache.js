@@ -8,6 +8,7 @@ import Model3dLoader from "./loader/Model3dLoader";
 import SpriteLoader from "./loader/SpriteLoader";
 import NodeWithEvents from "../../../core/model/event/NodeWithEvents";
 import StringHelper from "../../../core/helper/StringHelper";
+import Model3dAnimationLoader from "./loader/Model3dAnimationLoader";
 
 const ASSET_TYPE_LOADERS = {
 	'aud': AudioLoader,
@@ -15,6 +16,7 @@ const ASSET_TYPE_LOADERS = {
 	'glb': GlbLoader,
 	'mat': MaterialLoader,
 	'm3d': Model3dLoader,
+	'm3a': Model3dAnimationLoader,
 	'spr': SpriteLoader
 }
 

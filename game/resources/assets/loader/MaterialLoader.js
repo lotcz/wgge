@@ -11,6 +11,7 @@ export default class MaterialLoader extends AssetLoader {
 
 		const id = StringHelper.extractId(this.uri);
 		const definition = this.assets.resources.materials.getById(id);
+
 		if (!definition) {
 			this.fail(`material ID ${this.uri} not found`);
 			return;

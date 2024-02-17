@@ -39,6 +39,12 @@ export default class GameController extends ControllerBase {
 		);
 
 		this.addAutoEvent(
+			this.model.resources,
+			'dirty',
+			() => this.isResourcesDirty = true
+		);
+
+		this.addAutoEvent(
 			this.model,
 			'save-ui',
 			() => {
@@ -51,6 +57,11 @@ export default class GameController extends ControllerBase {
 			}
 		);
 
+	}
+
+	activateInternal() {
+		super.activateInternal();
+		this.loadResourcesFromStorage();
 	}
 
 	updateInternal(delta) {
