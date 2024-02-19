@@ -1,5 +1,9 @@
 import NodeWithEvents from "./event/NodeWithEvents";
 
+export const EVENT_REMOVE_ME = 'remove-me';
+
+export const EVENT_DIRTY = 'dirty';
+
 export default class ModelBase extends NodeWithEvents {
 
 	/**
@@ -51,7 +55,7 @@ export default class ModelBase extends NodeWithEvents {
 	makeDirty() {
 		if (!this.isDirty) {
 			this.isDirty = true;
-			this.triggerEvent('dirty');
+			this.triggerEvent(EVENT_DIRTY);
 		}
 	}
 
@@ -68,11 +72,11 @@ export default class ModelBase extends NodeWithEvents {
 	}
 
 	addOnDirtyListener(handler) {
-		this.addEventListener('dirty', handler);
+		this.addEventListener(EVENT_DIRTY, handler);
 	}
 
 	removeOnDirtyListener(handler) {
-		this.removeEventListener('dirty', handler);
+		this.removeEventListener(EVENT_DIRTY, handler);
 	}
 
 	subscribeToOnDirtyEvent(node) {
@@ -83,6 +87,10 @@ export default class ModelBase extends NodeWithEvents {
 	unsubscribeFromOnDirtyEvent(node) {
 		node.removeOnDirtyListener(this.propertyValueDirtyHandler);
 		return node;
+	}
+
+	removeMyself() {
+		this.triggerEvent(EVENT_REMOVE_ME, this);
 	}
 
 	equalsTo(ch) {

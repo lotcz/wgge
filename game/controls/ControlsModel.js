@@ -4,6 +4,10 @@ import BoolValue from "../../core/model/value/BoolValue";
 
 const CLICK_TIMEOUT = 250;
 
+export const EVENT_LEFT_CLICK = 'left-click';
+
+export const EVENT_RIGHT_CLICK = 'right-click';
+
 export default class ControlsModel extends ObjectModel {
 
 	/**
@@ -41,7 +45,7 @@ export default class ControlsModel extends ObjectModel {
 			this.leftClickTime = time;
 		} else {
 			if ((time - this.leftClickTime) < CLICK_TIMEOUT) {
-				this.triggerEvent('left-click', this.mouseCoordinates.clone());
+				this.triggerEvent(EVENT_LEFT_CLICK, this.mouseCoordinates.clone());
 			}
 		}
 	}
@@ -52,7 +56,7 @@ export default class ControlsModel extends ObjectModel {
 			this.rightClickTime = time;
 		} else {
 			if ((time - this.rightClickTime) < CLICK_TIMEOUT) {
-				this.triggerEvent('right-click', this.mouseCoordinates.clone());
+				this.triggerEvent(EVENT_RIGHT_CLICK, this.mouseCoordinates.clone());
 			}
 		}
 	}

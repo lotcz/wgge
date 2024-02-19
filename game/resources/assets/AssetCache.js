@@ -167,6 +167,14 @@ export default class AssetCache extends NodeWithEvents {
 		}
 	}
 
+	loadAsset(uri, onLoaded) {
+		this.getAsset(uri, onLoaded);
+	}
+	
+	loadImage(url, onLoaded) {
+		this.getAsset(url, onLoaded);
+	}
+
 	loadMaterial(materialId, onLoaded) {
 		this.getAsset(`mat/${materialId}`, onLoaded);
 	}

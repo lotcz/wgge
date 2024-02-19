@@ -29,4 +29,9 @@ export default class NodeWithEvents {
 		}
 	}
 
+	static isNodeWithEvents(node) {
+		if (!node) return false;
+		return (typeof node === 'object' && typeof node.addEventListener === 'function');
+	}
+
 }

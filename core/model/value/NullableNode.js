@@ -1,4 +1,5 @@
 import DirtyValue from "./DirtyValue";
+import {EVENT_REMOVE_ME} from "../ModelBase";
 
 export default class NullableNode extends DirtyValue {
 	nodeFactory;
@@ -12,6 +13,8 @@ export default class NullableNode extends DirtyValue {
 		super(null, persistent);
 
 		this.nodeFactory = nodeFactory;
+
+		this.childRequestedRemoveHandler = () => this.set(null);
 	}
 
 	/**
@@ -21,12 +24,14 @@ export default class NullableNode extends DirtyValue {
 	set(value) {
 		if (this.isSet()) {
 			this.unsubscribeFromOnDirtyEvent(this.value);
+			this.value.removeEventListener(EVENT_REMOVE_ME, this.childRequestedRemoveHandler);
 		}
 
 		super.set(value);
 
 		if (this.isSet()) {
 			this.subscribeToOnDirtyEvent(this.value);
+			this.value.addEventListener(EVENT_REMOVE_ME, this.childRequestedRemoveHandler);
 		}
 	}
 

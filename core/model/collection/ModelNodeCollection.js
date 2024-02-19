@@ -2,6 +2,7 @@ import NullableNode from "../value/NullableNode";
 import Collection from "../../Collection";
 import ArrayHelper from "../../helper/ArrayHelper";
 import ObjectModel from "../ObjectModel";
+import {EVENT_REMOVE_ME} from "../ModelBase";
 
 export default class ModelNodeCollection extends ObjectModel {
 
@@ -26,8 +27,13 @@ export default class ModelNodeCollection extends ObjectModel {
 		events.forEach((event) => this.children.addEventListener(event, (param) => this.triggerEvent(event, param)));
 		this.children.addOnAddListener((child) => this.onChildAdded(child));
 		this.children.addOnRemoveListener((child) => this.onChildRemoved(child));
-		this.childDirtyHandler = (ch) => this.onChildDirty(ch);
-		this.childRequestedRemoveHandler = (ch) => this.remove(ch);
+		this.childRequestedRemoveHandler = (ch) => {
+			if (!ch) {
+				console.warn("You triggered remove-me event without passing reference to the removed element!");
+				return;
+			}
+			this.remove(ch);
+		}
 
 		this.selectedNode = this.addProperty('selectedNode', new NullableNode(null, false));
 
@@ -183,8 +189,8 @@ export default class ModelNodeCollection extends ObjectModel {
 	 */
 	onChildAdded(child) {
 		this.makeDirty();
-		child.addOnDirtyListener(this.childDirtyHandler);
-		child.addEventListener('remove-me', this.childRequestedRemoveHandler);
+		this.subscribeToOnDirtyEvent(child);
+		child.addEventListener(EVENT_REMOVE_ME, this.childRequestedRemoveHandler);
 	}
 
 	/**
@@ -193,8 +199,8 @@ export default class ModelNodeCollection extends ObjectModel {
 	 */
 	onChildRemoved(child) {
 		this.makeDirty();
-		child.removeOnDirtyListener(this.childDirtyHandler);
-		child.removeEventListener('remove-me', this.childRequestedRemoveHandler);
+		this.unsubscribeFromOnDirtyEvent(child);
+		child.removeEventListener(EVENT_REMOVE_ME, this.childRequestedRemoveHandler);
 		if (this.selectedNode.equalsTo(child)) {
 			this.selectedNode.set(null);
 		}
