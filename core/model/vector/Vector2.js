@@ -1,5 +1,6 @@
 import ObjectModel from "../ObjectModel";
 import Rotation from "./Rotation";
+import NumberHelper from "../../helper/NumberHelper";
 
 export default class Vector2 extends ObjectModel {
 	x;
@@ -171,7 +172,7 @@ export default class Vector2 extends ObjectModel {
 		this.removeEventListener('change', eventHandler);
 	}
 
-	toString() {
-		return `[${this.x},${this.y}]`;
+	toString(decimals = 2) {
+		return `[${NumberHelper.round(this.x, decimals)},${NumberHelper.round(this.y, decimals)}]`;
 	}
 }

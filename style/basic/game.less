@@ -6,6 +6,9 @@
 @gold: #e0b050;
 @red: darkred;
 @white: #e0e0e0;
+@light-gray: #a0a0a0;
+@gray: #5a5a5a;
+@dark-gray: #2a2a2a;
 @black: rgb(0, 0, 0);
 @transparent-black: rgba(0, 0, 0, 0.7);
 
@@ -66,8 +69,12 @@ h1, h2, h3, h4 {
 	font-size: @font-size-extra-small;
 }
 
-.default-cursor {
-	//cursor: uri('img/cursor/cursor.png'), default;
+.cursor-default {
+	cursor: default;
+}
+
+.cursor-pointer {
+	cursor: pointer;
 }
 
 .info-float {
@@ -116,7 +123,7 @@ h1, h2, h3, h4 {
 }
 
 .main-menu-layer {
-	.default-cursor();
+	.cursor-default();
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -141,8 +148,23 @@ h1, h2, h3, h4 {
 	}
 }
 
+.menu {
+	.decor-text();
+
+	text-align: center;
+	color: @gray;
+
+	.item {
+		.cursor-pointer();
+
+		&:hover {
+			color: @light-gray;
+		}
+	}
+}
+
 .savegame-layer {
-	.default-cursor();
+	.cursor-default();
 	.normal-text();
 	color: @dark-brown;
 

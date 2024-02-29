@@ -15,7 +15,7 @@ export default class MenuItemRenderer extends DomRenderer {
 	}
 
 	activateInternal() {
-		this.container = this.addElement('h2', 'item');
+		this.container = this.addElement('div', 'item');
 		this.container.addEventListener(
 			'click',
 			(e) => {

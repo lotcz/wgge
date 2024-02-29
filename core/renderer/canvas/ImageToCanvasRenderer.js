@@ -51,7 +51,7 @@ export default class ImageToCanvasRenderer extends DomRenderer {
 			this.model.zoom.get()
 		);
 
-		//this.model.zoom.set(zoom);
+		this.model.zoom.set(zoom);
 
 		const center = ImageHelper.sanitizeCenter(
 			imageSize,

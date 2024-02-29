@@ -1,6 +1,5 @@
 import DomRenderer from "./DomRenderer";
 import DOMHelper from "../../helper/DOMHelper";
-import NumberHelper from "../../helper/NumberHelper";
 
 export default class Vector2Renderer extends DomRenderer {
 
@@ -32,6 +31,6 @@ export default class Vector2Renderer extends DomRenderer {
 	}
 
 	updateValue() {
-		this.container.innerText = this.formatter ? this.formatter(this.model) : `[${NumberHelper.round(this.model.x, 2)}, ${NumberHelper.round(this.model.y, 2)}]`;
+		this.container.innerText = this.formatter ? this.formatter(this.model) : this.model.toString();
 	}
 }

@@ -31,6 +31,6 @@ export default class DirtyValueRenderer extends DomRenderer {
 	}
 
 	updateValue() {
-		this.container.innerText = this.formatter ? this.formatter(this.model.get()) : this.model.get();
+		this.container.innerText = this.formatter ? this.formatter(this.model.get()) : String(this.model.get());
 	}
 }

@@ -1,8 +1,9 @@
 import DomRenderer from "../../core/renderer/dom/DomRenderer";
 import CollectionRenderer from "../../core/renderer/generic/CollectionRenderer";
 import MenuItemRenderer from "./item/MenuItemRenderer";
+import DOMHelper from "../../core/helper/DOMHelper";
 
-export default class MenuRenderer extends DomRenderer {
+export default class MainMenuRenderer extends DomRenderer {
 
 	/**
 	 * @type MenuModel
@@ -18,14 +19,16 @@ export default class MenuRenderer extends DomRenderer {
 			new CollectionRenderer(
 				this.game,
 				this.model.items,
-				(m) => new MenuItemRenderer(this.game, m, this.container)
+				(m) => new MenuItemRenderer(this.game, m, this.items)
 			)
 		);
 	}
 
 	activateInternal() {
-		this.container = this.addElement('div', 'menu');
-
+		this.container = this.addElement('div', 'main-menu-layer');
+		this.paper = DOMHelper.createElement(this.container, 'div', 'main-menu paper');
+		this.inner = DOMHelper.createElement(this.paper, 'div', 'inner p-3');
+		this.items = DOMHelper.createElement(this.inner, 'div', 'items m-3');
 	}
 
 	deactivateInternal() {

@@ -2,9 +2,9 @@ import DomRenderer from "../core/renderer/dom/DomRenderer";
 import EditorRenderer from "../editor/EditorRenderer";
 import NullableNodeRenderer from "../core/renderer/generic/NullableNodeRenderer";
 import GlobalAudioRenderer from "../core/audio/global/GlobalAudioRenderer";
-import MenuRenderer from "./menu/MenuRenderer";
 import ConditionalNodeRenderer from "../core/renderer/generic/ConditionalNodeRenderer";
 import DOMHelper from "../core/helper/DOMHelper";
+import MainMenuRenderer from "./menu/MainMenuRenderer";
 
 export default class GameRenderer extends DomRenderer {
 
@@ -31,7 +31,7 @@ export default class GameRenderer extends DomRenderer {
 			new NullableNodeRenderer(
 				this.game,
 				this.model.menu,
-				(m) => new MenuRenderer(this.game, m, this.menuLayer)
+				(m) => new MainMenuRenderer(this.game, m, this.menuLayer)
 			)
 		);
 
