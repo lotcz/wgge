@@ -1,6 +1,6 @@
 import DomRenderer from "./DomRenderer";
 
-export default class ImageRenderer extends DomRenderer {
+export default class ImageDomRenderer extends DomRenderer {
 
 	/**
 	 * @type DirtyValue

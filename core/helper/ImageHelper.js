@@ -12,7 +12,7 @@ export default class ImageHelper {
 	 * @param {Number} max
 	 * @returns {number}
 	 */
-	static sanitizeZoom(size, viewBoxSize, zoom = 0.0, min = 0, max = Number.MAX_VALUE) {
+	static sanitizeZoom(size, viewBoxSize, zoom = 0.0, min = 0.0, max = Number.MAX_VALUE) {
 		if (size.size() === 0) return 1;
 
 		const minZoomX = viewBoxSize.x / size.x;

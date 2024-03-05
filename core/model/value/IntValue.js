@@ -2,6 +2,14 @@ import DirtyValue from "./DirtyValue";
 
 export default class IntValue extends DirtyValue {
 
+	/**
+	 *
+	 * @return Number
+	 */
+	get() {
+		return super.get();
+	}
+
 	set(value) {
 		if (value === null || value === undefined || value === '') {
 			super.set(Number.NaN);
@@ -16,5 +24,9 @@ export default class IntValue extends DirtyValue {
 
 	increase(num) {
 		this.set(this.get() + num);
+	}
+
+	multiply(num) {
+		this.set(this.get() * num);
 	}
 }

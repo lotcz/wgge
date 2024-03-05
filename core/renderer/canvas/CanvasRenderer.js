@@ -19,12 +19,24 @@ export default class CanvasRenderer extends RendererBase {
 
 	}
 
-	activateInternal() {
+	activate() {
 		this.context2d = this.canvas.getContext('2d');
+
+		super.activate();
 	}
 
-	deactivateInternal() {
+	deactivate() {
+		super.deactivate();
+
 		this.context2d = null;
+	}
+
+	checkContext() {
+		const ok = (this.context2d !== null);
+		if (!ok) {
+			console.error('No context to draw!');
+		}
+		return ok;
 	}
 
 	/**
@@ -34,6 +46,7 @@ export default class CanvasRenderer extends RendererBase {
 	 * @param {CanvasGradient|string} fill
 	 */
 	drawRect(start, size, fill = 'black') {
+		if (!this.checkContext()) return;
 		const end = start.add(size);
 		this.context2d.fillStyle = fill;
 		this.context2d.fillRect(start.x, start.y, end.x, end.y);
@@ -48,6 +61,7 @@ export default class CanvasRenderer extends RendererBase {
 	 * @param {[[Number, string|color]]} stops
 	 */
 	drawGradient(start, size, gradientStart, gradientSize, stops) {
+		if (!this.checkContext()) return;
 		const gradientEnd = gradientStart.add(gradientSize);
 		const grd = this.context2d.createLinearGradient(gradientStart.x, gradientStart.y, gradientEnd.x, gradientEnd.y);
 		stops.forEach((s) => {
@@ -73,6 +87,7 @@ export default class CanvasRenderer extends RendererBase {
 		startAngle = 0,
 		endAngle = 2 * Math.PI
 	) {
+		if (!this.checkContext()) return;
 		this.context2d.beginPath();
 		this.context2d.fillStyle = (fill) ? fill : 'transparent';
 		this.context2d.strokeStyle = stroke ? stroke.color ? stroke.color : 'orange' : 'transparent';
@@ -91,5 +106,27 @@ export default class CanvasRenderer extends RendererBase {
 	 */
 	drawCircle(center, radius, fill, stroke) {
 		this.drawArc(center, radius, fill, stroke);
+	}
+
+	drawImage(image, drawStart, drawEnd, imageStart, imageEnd, opacity = 1, clear = true) {
+		if (!image) {
+			console.error('No image to draw!');
+			return;
+		}
+		if (!this.checkContext()) return;
+
+		if (clear) this.context2d.clearRect(drawStart.x, drawStart.y, drawEnd.x, drawEnd.y);
+		this.context2d.globalAlpha = opacity;
+		this.context2d.drawImage(
+			image,
+			imageStart.x,
+			imageStart.y,
+			imageEnd.x,
+			imageEnd.y,
+			drawStart.x,
+			drawStart.y,
+			drawEnd.x,
+			drawEnd.y
+		);
 	}
 }

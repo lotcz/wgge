@@ -1,6 +1,6 @@
 export default class NumberHelper {
 
-	static round(number, decimals) {
+	static round(number, decimals = 0) {
 		const d = Math.pow(10, decimals);
 		return Math.round(number * d) / d;
 	}

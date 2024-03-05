@@ -1,5 +1,6 @@
 import DomRenderer from "../../../core/renderer/dom/DomRenderer";
 import DirtyValueRenderer from "../../../core/renderer/dom/DirtyValueRenderer";
+import DOMHelper from "../../../core/helper/DOMHelper";
 
 export default class MenuItemRenderer extends DomRenderer {
 
@@ -12,6 +13,13 @@ export default class MenuItemRenderer extends DomRenderer {
 		super(game, model, dom);
 
 		this.model = model;
+
+		this.addAutoEvent(
+			this.model.isActive,
+			'change',
+			() => DOMHelper.toggleClass(this.container, 'active', this.model.isActive.get()),
+			true
+		);
 	}
 
 	activateInternal() {

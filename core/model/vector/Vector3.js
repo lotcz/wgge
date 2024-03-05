@@ -95,4 +95,13 @@ export default class Vector3 extends ObjectModel {
 	asRgbColor() {
 		return `rgb(${Math.round(this.x)}, ${Math.round(this.y)}, ${Math.round(this.z)})`;
 	}
+
+	size() {
+		return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
+	}
+
+	distanceTo(v) {
+		return this.subtract(v).size();
+	}
+
 }

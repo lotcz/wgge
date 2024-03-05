@@ -1,10 +1,11 @@
 export const EASING_FLAT = (x) => x;
-export const EASING_EXPONENTIAL_IN = (x, e = 2) => Math.pow(x,e);
+export const EASING_EXPONENTIAL_IN = (x, e = 2) => Math.pow(x, e);
 export const EASING_EXPONENTIAL_IN_OUT = (x, e = 2) => (x <= 0.5) ? Math.pow(x * 2, e) / 2 : 1 - Math.pow(2 - x * 2, e) / 2;
 export const EASING_QUAD_IN = EASING_EXPONENTIAL_IN;
 export const EASING_QUAD_IN_OUT = EASING_EXPONENTIAL_IN_OUT;
 export const EASING_CUBIC_IN = (x) => EASING_EXPONENTIAL_IN(x, 3);
 export const EASING_CUBIC_IN_OUT = (x) => EASING_EXPONENTIAL_IN_OUT(x, 3);
+export const EASING_LOG_OUT = (v) => Math.log2(v) / 4 + 1;
 
 export default class ProgressValue {
 	start;
