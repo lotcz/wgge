@@ -1,4 +1,3 @@
-import Stats from 'three/examples/jsm/libs/stats.module'
 import DOMHelper from "./core/helper/DOMHelper";
 
 export default class Wgge {
@@ -32,7 +31,7 @@ export default class Wgge {
 			window['wegge'] = this;
 		}
 		if (this.showStats) {
-			this.stats = new Stats();
+			//this.stats = new Stats();
 			document.body.appendChild(this.stats.dom);
 		}
 		this.enabled = true;
