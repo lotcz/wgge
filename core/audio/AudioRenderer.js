@@ -40,18 +40,21 @@ export default class AudioRenderer extends RendererBase {
 			}
 		});
 
-		this.game.assets.getAsset(this.model.url.get(), (audio) => {
-			if (!this.audio) {
-				console.log('audio loaded after renderer was deactivated');
-				return;
+		this.game.assets.loadAsset(
+			this.model.url.get(),
+			(audio) => {
+				if (!this.audio) {
+					console.log('audio loaded after renderer was deactivated');
+					return;
+				}
+
+				this.audio.addEventListener('canplaythrough', () => {
+					this.updatePlaying();
+				});
+
+				this.audio.src = audio.src;
 			}
-
-			this.audio.addEventListener('canplaythrough', () => {
-				this.updatePlaying();
-			});
-
-			this.audio.src = audio.src;
-		});
+		);
 	}
 
 	deactivateInternal() {

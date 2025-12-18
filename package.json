@@ -1,6 +1,6 @@
 {
 	"name": "wgge",
-	"version": "1.0.1",
+	"version": "1.0.9",
 	"description": "Web GL Game Engine",
 	"main": "index.js",
 	"devDependencies": {
@@ -24,5 +24,8 @@
 		"debug-watch-less": "less-watch-compiler style build style.less",
 		"debug": "concurrently \"npm:debug-*\""
 	},
-	"author": "Karel Zavadil"
+	"author": "Karel Zavadil",
+	"dependencies": {
+		"localforage": "^1.10.0"
+	}
 }

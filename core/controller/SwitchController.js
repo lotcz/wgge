@@ -1,11 +1,6 @@
-import ControllerBase from "../../controller/ControllerBase";
+import ControllerBase from "./ControllerBase";
 
 export default class SwitchController extends ControllerBase {
-
-	/**
-	 * @type DirtyValue
-	 */
-	valueModel;
 
 	/**
 	 * @type object

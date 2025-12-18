@@ -3,7 +3,7 @@ import RendererBase from "../RendererBase";
 export default class NullableNodeRenderer extends RendererBase {
 
 	/**
-	 * @type NodeValue
+	 * @type NullableNode
 	 */
 	model;
 
@@ -13,6 +13,7 @@ export default class NullableNodeRenderer extends RendererBase {
 
 		this.rendererFactory = rendererFactory;
 		this.defaultRendererFactory = defaultRendererFactory;
+		this.renderer = null;
 
 		this.addAutoEvent(
 			this.model,
@@ -33,6 +34,7 @@ export default class NullableNodeRenderer extends RendererBase {
 
 	updateRenderer() {
 		this.resetChildren();
+		this.renderer = null;
 		if (this.model.isSet()) {
 			this.renderer = this.addChild(this.rendererFactory(this.model.get()));
 		} else if (this.defaultRendererFactory) {

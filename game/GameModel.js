@@ -2,7 +2,6 @@ import ObjectModel from "../core/model/ObjectModel";
 import Vector2 from "../core/model/vector/Vector2";
 import ControlsModel from "./controls/ControlsModel";
 import ResourcesModel from "./resources/ResourcesModel";
-import EditorModel from "../editor/EditorModel";
 import NullableNode from "../core/model/value/NullableNode";
 import BoolValue from "../core/model/value/BoolValue";
 import GlobalAudioModel from "../core/audio/global/GlobalAudioModel";
@@ -14,11 +13,6 @@ export default class GameModel extends ObjectModel {
 	 * @type BoolValue
 	 */
 	isInDebugMode;
-
-	/**
-	 * @type EditorModel
-	 */
-	editor;
 
 	/**
 	 * @type NullableNode<MenuModel>
@@ -59,7 +53,6 @@ export default class GameModel extends ObjectModel {
 		super(false);
 
 		this.isInDebugMode = this.addProperty('isInDebugMode', new BoolValue(debugModeEnabled));
-		this.editor = this.addProperty('editor', new EditorModel());
 		this.menu = this.addProperty('menu', new NullableNode());
 
 		this.viewBoxSize = this.addProperty('viewBoxSize', new Vector2());

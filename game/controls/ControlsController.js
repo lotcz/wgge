@@ -16,20 +16,15 @@ export default class ControlsController extends ControllerBase {
 	}
 
 	activateInternal() {
-		this.deactivateInternal();
-		this.dom.addEventListener('mousemove', (e) => this.onMouseMove(e));
-		this.dom.addEventListener('mouseenter', (e) => this.onMouseEnter(e));
-		this.dom.addEventListener('mouseleave', (e) => this.onMouseLeave(e));
-		this.dom.addEventListener('mousedown', (e) => this.updateMouseButtons(e));
-		this.dom.addEventListener('mouseup', (e) => this.updateMouseButtons(e));
-		this.dom.addEventListener('wheel', (e) => this.onZoom(e), {passive: true});
-		window.addEventListener('keydown', (e) => this.onKeyDown(e), false);
-		window.addEventListener('keyup', (e) => this.onKeyUp(e), false);
-		window.addEventListener('contextmenu', (e) => this.onContextMenu(e), false);
-	}
-
-	deactivateInternal() {
-
+		this.addAutoEvent(this.dom, 'mousemove', (e) => this.onMouseMove(e));
+		this.addAutoEvent(this.dom, 'mouseenter', (e) => this.onMouseEnter(e));
+		this.addAutoEvent(this.dom, 'mouseleave', (e) => this.onMouseLeave(e));
+		this.addAutoEvent(this.dom, 'mousedown', (e) => this.updateMouseButtons(e));
+		this.addAutoEvent(this.dom, 'mouseup', (e) => this.updateMouseButtons(e));
+		this.addAutoEvent(this.dom, 'wheel', (e) => this.onZoom(e));
+		this.addAutoEvent(this.dom, 'keydown', (e) => this.onKeyDown(e));
+		this.addAutoEvent(window, 'keyup', (e) => this.onKeyUp(e));
+		this.addAutoEvent(window, 'contextmenu', (e) => this.onContextMenu(e));
 	}
 
 	onKeyDown(event) {

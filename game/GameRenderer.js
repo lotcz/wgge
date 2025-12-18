@@ -1,8 +1,6 @@
 import DomRenderer from "../core/renderer/dom/DomRenderer";
-import EditorRenderer from "../editor/EditorRenderer";
 import NullableNodeRenderer from "../core/renderer/generic/NullableNodeRenderer";
 import GlobalAudioRenderer from "../core/audio/global/GlobalAudioRenderer";
-import ConditionalNodeRenderer from "../core/renderer/generic/ConditionalNodeRenderer";
 import DOMHelper from "../core/helper/DOMHelper";
 import MainMenuRenderer from "./menu/MainMenuRenderer";
 
@@ -18,7 +16,7 @@ export default class GameRenderer extends DomRenderer {
 
 		this.model = model;
 		this.loading = null;
-		this.addClass('wegge-host');
+		this.addClass('wgge-host container-host');
 
 		this.addChild(
 			new GlobalAudioRenderer(
@@ -32,15 +30,6 @@ export default class GameRenderer extends DomRenderer {
 				this.game,
 				this.model.menu,
 				(m) => new MainMenuRenderer(this.game, m, this.menuLayer)
-			)
-		);
-
-		this.addChild(
-			new ConditionalNodeRenderer(
-				this.game,
-				this.model.isInDebugMode,
-				() => this.model.isInDebugMode.get(),
-				() => new EditorRenderer(this.game, this.model.editor, this.editorLayer)
 			)
 		);
 
@@ -68,7 +57,6 @@ export default class GameRenderer extends DomRenderer {
 		this.saveGameLayer = DOMHelper.createElement(this.container, 'div', 'savegame-layer container container-host');
 		this.loadingLayer = DOMHelper.createElement(this.container, 'div', 'loading-layer');
 		this.menuLayer = DOMHelper.createElement(this.container, 'div', 'menu-layer');
-		this.editorLayer = DOMHelper.createElement(this.container, 'div', 'editor-layer');
 
 		this.model.assets.preload(this.model.getResourcesForPreload());
 	}
@@ -79,7 +67,6 @@ export default class GameRenderer extends DomRenderer {
 		this.saveGameLayer = null;
 		this.loadingLayer = null;
 		this.menuLayer = null;
-		this.editorLayer = null;
 	}
 
 	updateLoading() {

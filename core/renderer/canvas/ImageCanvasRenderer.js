@@ -42,18 +42,22 @@ export default class ImageCanvasRenderer extends CanvasRenderer {
 			this.model.viewSize,
 			start,
 			size,
-			this.model.actualOpacity.get()
+			this.model.actualOpacity.get(),
+			false
 		);
 	}
 
 	reloadImage() {
 		this.image = null;
 		if (this.model.image.uri.isEmpty()) return;
-		this.game.assets.getAsset(this.model.image.uri.get(), (img) => {
-			this.image = img;
-			this.model.image.size.set(img.width, img.height);
-			this.renderImage();
-		});
+		this.game.assets.loadAsset(
+			this.model.image.uri.get(),
+			(img) => {
+				this.image = img;
+				this.model.image.size.set(img.width, img.height);
+				this.renderImage();
+			}
+		);
 	}
 
 }

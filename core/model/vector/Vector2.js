@@ -87,6 +87,10 @@ export default class Vector2 extends ObjectModel {
 		return this.subtract(v);
 	}
 
+	isInside(start, size) {
+		return this.x >= start.x && this.x <= (start.x + size.x) && this.y >= start.y && this.y <= (start.y + size.y);
+	}
+
 	toArray() {
 		return [this.x, this.y];
 	}

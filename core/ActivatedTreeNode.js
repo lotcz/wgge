@@ -19,7 +19,7 @@ export default class ActivatedTreeNode {
 
 	/**
 	 *
-	 * @type {[{param}]}
+	 * @type array
 	 * @type param.node {ModelNode}
 	 * @type param.event {string}
 	 * @type param.handler {(ep) => any}

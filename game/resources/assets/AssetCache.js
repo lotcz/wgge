@@ -1,23 +1,13 @@
 import Dictionary from "../../../core/Dictionary";
 import Collection from "../../../core/Collection";
 import ImageLoader from "./loader/ImageLoader";
-import GlbLoader from "./loader/GlbLoader";
 import AudioLoader from "./loader/AudioLoader";
-import MaterialLoader from "./loader/MaterialLoader";
-import Model3dLoader from "./loader/Model3dLoader";
-import SpriteLoader from "./loader/SpriteLoader";
 import NodeWithEvents from "../../../core/model/event/NodeWithEvents";
 import StringHelper from "../../../core/helper/StringHelper";
-import Model3dAnimationLoader from "./loader/Model3dAnimationLoader";
 
 const ASSET_TYPE_LOADERS = {
 	'aud': AudioLoader,
-	'img': ImageLoader,
-	'glb': GlbLoader,
-	'mat': MaterialLoader,
-	'm3d': Model3dLoader,
-	'm3a': Model3dAnimationLoader,
-	'spr': SpriteLoader
+	'img': ImageLoader
 }
 
 /**
@@ -133,7 +123,7 @@ export default class AssetCache extends NodeWithEvents {
 		this.loaders.remove(loader);
 	}
 
-	getAsset(uri, onLoaded = null, onError = null) {
+	loadAsset(uri, onLoaded = null, onError = null) {
 		if (typeof uri !== 'string') {
 			console.log('uri is not a string', uri);
 			return;
@@ -167,37 +157,25 @@ export default class AssetCache extends NodeWithEvents {
 		}
 	}
 
-	loadAsset(uri, onLoaded) {
-		this.getAsset(uri, onLoaded);
-	}
-	
 	loadImage(url, onLoaded) {
-		this.getAsset(url, onLoaded);
+		this.loadAsset(url, onLoaded);
 	}
 
-	loadMaterial(materialId, onLoaded) {
-		this.getAsset(`mat/${materialId}`, onLoaded);
+	loadAudio(materialId, onLoaded) {
+		this.loadAsset(`mat/${materialId}`, onLoaded);
 	}
 
 	resetMaterial(materialId) {
 		this.resetCache(`mat/${materialId}`);
 	}
 
-	loadModel3d(modelId, onLoaded) {
-		this.getAsset(`m3d/${modelId}`, onLoaded);
-	}
-
-	loadSprite(spriteId, onLoaded) {
-		this.getAsset(`spr/${spriteId}`, onLoaded);
-	}
-
 	preload(resources) {
 		console.log('Preloading:', resources);
-		resources.forEach((r) => this.getAsset(r));
+		resources.forEach((r) => this.loadAsset(r));
 	}
 
 	load(resources) {
 		console.log('Loading:', resources);
-		resources.forEach((r) => this.getAsset(r, () => undefined));
+		resources.forEach((r) => this.loadAsset(r, () => undefined));
 	}
 }

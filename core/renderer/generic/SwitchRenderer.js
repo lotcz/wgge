@@ -3,11 +3,6 @@ import RendererBase from "../RendererBase";
 export default class SwitchRenderer extends RendererBase {
 
 	/**
-	 * @type DirtyValue
-	 */
-	valueModel;
-
-	/**
 	 * @type object
 	 */
 	rendererFactories;

@@ -33,9 +33,12 @@ export default class ImageDomRenderer extends DomRenderer {
 			console.error('Invalid image URI', uri);
 			return;
 		}
-		this.game.assets.getAsset(uri, (img) => {
-			this.container = img.cloneNode(true);
-			this.dom.appendChild(this.container);
-		});
+		this.game.assets.loadAsset(
+			uri,
+			(img) => {
+				this.container = img.cloneNode(true);
+				this.dom.appendChild(this.container);
+			}
+		);
 	}
 }

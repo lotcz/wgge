@@ -1,6 +1,5 @@
 import * as localForage from "localforage";
 import ControllerBase from "../core/controller/ControllerBase";
-import EditorController from "../editor/EditorController";
 import ControlsController from "./controls/ControlsController";
 
 export default class GameController extends ControllerBase {
@@ -19,10 +18,9 @@ export default class GameController extends ControllerBase {
 		this.resourcesTimeOut = null;
 
 		this.addChild(new ControlsController(this.game, this.model.controls));
-		this.addChild(new EditorController(this.game, this.model.editor));
 
 		this.addAutoEvent(
-			window,
+			this.model,
 			'resize',
 			() => {
 				this.runOnUpdate(() => this.model.viewBoxSize.set(window.innerWidth, window.innerHeight));

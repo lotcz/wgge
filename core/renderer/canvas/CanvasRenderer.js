@@ -47,9 +47,8 @@ export default class CanvasRenderer extends RendererBase {
 	 */
 	drawRect(start, size, fill = 'black') {
 		if (!this.checkContext()) return;
-		const end = start.add(size);
 		this.context2d.fillStyle = fill;
-		this.context2d.fillRect(start.x, start.y, end.x, end.y);
+		this.context2d.fillRect(start.x, start.y, size.x, size.y);
 	}
 
 	/**
@@ -108,25 +107,25 @@ export default class CanvasRenderer extends RendererBase {
 		this.drawArc(center, radius, fill, stroke);
 	}
 
-	drawImage(image, drawStart, drawEnd, imageStart, imageEnd, opacity = 1, clear = true) {
+	drawImage(image, drawStart, drawSize, imageStart, imageSize, opacity = 1, clear = true) {
 		if (!image) {
 			console.error('No image to draw!');
 			return;
 		}
 		if (!this.checkContext()) return;
 
-		if (clear) this.context2d.clearRect(drawStart.x, drawStart.y, drawEnd.x, drawEnd.y);
+		if (clear) this.context2d.clearRect(drawStart.x, drawStart.y, drawSize.x, drawSize.y);
 		this.context2d.globalAlpha = opacity;
 		this.context2d.drawImage(
 			image,
 			imageStart.x,
 			imageStart.y,
-			imageEnd.x,
-			imageEnd.y,
+			imageSize.x,
+			imageSize.y,
 			drawStart.x,
 			drawStart.y,
-			drawEnd.x,
-			drawEnd.y
+			drawSize.x,
+			drawSize.y
 		);
 	}
 }
