@@ -5,11 +5,31 @@ import AssetLoader from "./AssetLoader";
  */
 export default class ImageLoader extends AssetLoader {
 
-	loadInternal() {
-		const image = new Image();
-		image.onload = () => this.finish(image);
-		image.onerror = (msg) => this.fail(msg);
-		image.src = this.url();
+	constructor(assets, uri, preload = false) {
+		super(assets, uri, preload);
+
+		this.image = new Image();
+
+		this.successHandler = () =>  {
+			this.finish(this.image);
+			this.imageLoadingFinished()
+		}
+
+		this.errorHandler = (msg) => {
+			this.fail(msg);
+			this.imageLoadingFinished();
+		}
+
 	}
 
+	loadInternal() {
+		this.image.addEventListener('load', this.successHandler);
+		this.image.addEventListener('error', this.errorHandler);
+		this.image.src = this.url();
+	}
+
+	imageLoadingFinished() {
+		this.image.removeEventListener('error', this.errorHandler);
+		this.image.removeEventListener('load', this.successHandler);
+	}
 }

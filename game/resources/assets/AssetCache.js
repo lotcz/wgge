@@ -104,9 +104,7 @@ export default class AssetCache extends NodeWithEvents {
 
 	loaderFailed(loader, msg, onError) {
 		console.error(`Loading of asset '${loader.uri}' failed: ${msg}`);
-
 		if (onError) onError(msg);
-
 		this.loaders.remove(loader);
 	}
 
@@ -117,9 +115,7 @@ export default class AssetCache extends NodeWithEvents {
 		} else {
 			this.cache.add(loader.uri, resource);
 		}
-
 		if (onLoaded) onLoaded(resource);
-
 		this.loaders.remove(loader);
 	}
 

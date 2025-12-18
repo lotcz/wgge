@@ -5,11 +5,31 @@ import AssetLoader from "./AssetLoader";
  */
 export default class AudioLoader extends AssetLoader {
 
+	constructor(assets, uri, preload = false) {
+		super(assets, uri, preload);
+
+		this.audio = new Audio();
+
+		this.successHandler = () => {
+			this.finish(this.audio);
+			this.audioLoadingFinished()
+		}
+
+		this.errorHandler = (msg) => {
+			this.fail(msg);
+			this.audioLoadingFinished();
+		}
+	}
+
 	loadInternal() {
-		const audio = new Audio();
-		audio.addEventListener('canplaythrough', () => this.finish(audio));
-		audio.onerror = (msg) => this.fail(msg);
-		audio.src = this.url();
+		this.audio.addEventListener('canplaythrough', this.successHandler);
+		this.audio.addEventListener('error', this.errorHandler);
+		this.audio.src = this.url();
+	}
+
+	audioLoadingFinished() {
+		this.audio.removeEventListener('canplaythrough', this.errorHandler);
+		this.audio.removeEventListener('load', this.successHandler);
 	}
 
 }
