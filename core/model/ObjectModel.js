@@ -51,7 +51,13 @@ export default class ObjectModel extends ModelBase {
 			return;
 		}
 		if (state.p) {
-			this.properties.forEach((name, property) => property.restoreState(state.p[name]));
+			this.properties.forEach(
+				(name, property) => {
+					if (property.isPersistent) {
+						property.restoreState(state.p[name]);
+					}
+				}
+			);
 		}
 		if (state.i !== undefined) {
 			this.restoreStateInternal(state.i);
@@ -67,8 +73,15 @@ export default class ObjectModel extends ModelBase {
 
 		if (this.properties.count() > 0) {
 			const properties = {};
-			this.properties.forEach((name, propertyNode) =>
-				properties[name] = propertyNode.getState()
+			this.properties.forEach(
+				(name, propertyNode) => {
+					if (propertyNode.isPersistent) {
+						const s = propertyNode.getState();
+						if (s !== undefined) {
+							properties[name] = s;
+						}
+					}
+				}
 			);
 			state.p = properties;
 		}
