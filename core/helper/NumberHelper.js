@@ -11,6 +11,13 @@ export default class NumberHelper {
 	}
 
 	/**
+	 * Return true for the given percent of calls.
+	 */
+	static randomPercent(percent) {
+		return NumberHelper.random(0, 100) < percent;
+	}
+
+	/**
 		Returns n if n is between min and max. Return min if n lower than min or return max if n is greater than max.
 	 */
 	static between(min, max, n) {
