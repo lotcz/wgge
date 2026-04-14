@@ -1,6 +1,6 @@
 {
 	"name": "wgge",
-	"version": "1.0.15",
+	"version": "1.0.17",
 	"description": "Web GL Game Engine",
 	"main": "index.js",
 	"devDependencies": {

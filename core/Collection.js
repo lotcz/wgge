@@ -153,4 +153,12 @@ export default class Collection extends NodeWithEvents {
 		this.removeEventListener('add', listener);
 	}
 
+	addOnChangeListener(listener) {
+		this.addEventListener('change', listener);
+	}
+
+	removeOnChangeListener(listener) {
+		this.removeEventListener('change', listener);
+	}
+
 }

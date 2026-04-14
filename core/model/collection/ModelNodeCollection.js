@@ -23,7 +23,7 @@ export default class ModelNodeCollection extends ObjectModel {
 
 		this.nodeFactory = nodeFactory;
 		this.children = new Collection();
-		const events = ['add', 'remove', 'change'];
+		const events = ['add', 'insert', 'remove', 'change'];
 		events.forEach((event) => this.children.addEventListener(event, (param) => this.triggerEvent(event, param)));
 		this.children.addOnAddListener((child) => this.onChildAdded(child));
 		this.children.addOnRemoveListener((child) => this.onChildRemoved(child));
@@ -181,6 +181,14 @@ export default class ModelNodeCollection extends ObjectModel {
 
 	removeOnRemoveListener(handler) {
 		this.children.removeOnRemoveListener(handler);
+	}
+
+	addOnChangeListener(handler) {
+		this.children.addOnChangeListener(handler);
+	}
+
+	removeOnChangeListener(handler) {
+		this.children.removeOnChangeListener(handler);
 	}
 
 	/**

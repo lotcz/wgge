@@ -144,6 +144,15 @@ export default class Vector2 extends ObjectModel {
 		return neighbors;
 	}
 
+	isNeighborPosition(position, size = 1, includeCenter = false) {
+		const distX = Math.abs(this.x - position.x);
+		const distY = Math.abs(this.y - position.y);
+		if (distX === 0 && distY === 0) {
+			return includeCenter;
+		}
+		return Math.max(distX, distY) <= size;
+	}
+
 	getClosest(positions) {
 		if ((!positions) || positions.length === 0) return null;
 		if (positions.length === 1) return positions[0];
