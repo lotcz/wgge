@@ -153,6 +153,21 @@ export default class Vector2 extends ObjectModel {
 		return Math.max(distX, distY) <= size;
 	}
 
+	getDirectNeighborPositions(position, includeCenter = false) {
+		const positions = [];
+		if (includeCenter) positions.push(position);
+		positions.push(new Vector2(position.x - 1, position.y));
+		positions.push(new Vector2(position.x, position.y - 1));
+		positions.push(new Vector2(position.x + 1, position.y));
+		positions.push(new Vector2(position.x, position.y + 1));
+		return positions;
+	}
+
+	isDirectNeighborPosition(position, includeCenter = false) {
+		if (!this.isNeighborPosition(position, 1, includeCenter)) return false;
+		return (this.x === position.x || this.y === position.y);
+	}
+
 	getClosest(positions) {
 		if ((!positions) || positions.length === 0) return null;
 		if (positions.length === 1) return positions[0];
