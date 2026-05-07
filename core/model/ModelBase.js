@@ -96,4 +96,8 @@ export default class ModelBase extends NodeWithEvents {
 	equalsTo(ch) {
 		return this === ch;
 	}
+
+	getResourcesForPreload() {
+		return [];
+	}
 }
