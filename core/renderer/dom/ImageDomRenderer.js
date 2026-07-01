@@ -27,7 +27,6 @@ export default class ImageDomRenderer extends DomRenderer {
 	}
 
 	renderImage() {
-		this.removeElement(this.container);
 		let uri = this.model.get();
 		if (typeof uri !== 'string' || uri.length === 0) {
 			console.error('Invalid image URI', uri);
@@ -36,8 +35,9 @@ export default class ImageDomRenderer extends DomRenderer {
 		this.game.assets.loadAsset(
 			uri,
 			(img) => {
+				this.removeElement(this.container);
 				this.container = img.cloneNode(true);
-				this.dom.appendChild(this.container);
+				this.addChild(this.container);
 			}
 		);
 	}
