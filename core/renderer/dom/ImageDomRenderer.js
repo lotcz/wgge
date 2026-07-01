@@ -37,7 +37,7 @@ export default class ImageDomRenderer extends DomRenderer {
 			(img) => {
 				this.removeElement(this.container);
 				this.container = img.cloneNode(true);
-				this.addChild(this.container);
+				this.dom.appendChild(this.container);
 			}
 		);
 	}
