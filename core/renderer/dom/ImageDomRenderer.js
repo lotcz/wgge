@@ -1,4 +1,5 @@
 import DomRenderer from "./DomRenderer";
+import DOMHelper from "../../helper/DOMHelper";
 
 export default class ImageDomRenderer extends DomRenderer {
 
@@ -37,6 +38,7 @@ export default class ImageDomRenderer extends DomRenderer {
 			(img) => {
 				this.removeElement(this.container);
 				this.container = img.cloneNode(true);
+				this.container.setAttribute('draggable', 'false');
 				this.dom.appendChild(this.container);
 			}
 		);

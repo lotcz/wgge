@@ -45,6 +45,7 @@ export default class DirtyValue extends ModelBase {
 		if (typeof value === 'object' && value !== null && value !== undefined && value.value !== undefined) {
 			return value.value === this.value;
 		}
+		return false;
 	}
 
 	restoreStateInternal(state) {
