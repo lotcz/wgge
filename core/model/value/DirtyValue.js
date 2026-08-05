@@ -4,7 +4,7 @@ export default class DirtyValue extends ModelBase {
 	/** @type object|string|null */
 	value = null;
 
-	constructor(value = null, persistent = true) {
+	constructor(value = undefined, persistent = true) {
 		super(persistent);
 		this.set(value);
 	}

@@ -225,7 +225,7 @@ export default class ModelNodeCollection extends ObjectModel {
 	}
 
 	restoreStateInternal(state) {
-		this.children.reset();
+		this.reset();
 		if (!this.nodeFactory) {
 			console.log('no factory for restoring ModelNodeCollection');
 			return;
