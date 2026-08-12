@@ -47,15 +47,11 @@ export default class Collection extends NodeWithEvents {
 	}
 
 	removeInternal(index, element) {
-		if (index >= 0) {
-			this.items.splice(index, 1);
-		}
-		if (element) {
-			this.triggerEvent('remove', element);
-			this.triggerEvent('change');
-			return element;
-		}
-		return false;
+		if (index < 0 || !element) return false;
+		this.items.splice(index, 1);
+		this.triggerEvent('remove', element);
+		this.triggerEvent('change');
+		return element;
 	}
 
 	reset() {
@@ -85,18 +81,12 @@ export default class Collection extends NodeWithEvents {
 
 	swap(childA, childB) {
 		const indexA = this.items.indexOf(childA);
-		if (indexA < 0) {
+		const indexB = this.items.indexOf(childB);
+		if (indexA < 0 || indexB < 0) {
 			return;
 		}
 		this.removeInternal(indexA, childA);
-
-		const indexB = this.items.indexOf(childB);
-		if (indexB < 0) {
-			this.insert(childA, indexA);
-			return;
-		}
 		this.removeInternal(indexB, childB);
-
 		this.insert(childA, indexB);
 		this.insert(childB, indexA);
 	}
