@@ -35,10 +35,8 @@ export default class EventManager {
 		if (!this.handlers[eventName]) {
 			return;
 		}
-		const handlers = this.handlers[eventName];
-		handlers.forEach((item) => {
-			item(param);
-		});
+		const handlers = [...this.handlers[eventName]];
+		handlers.forEach((item) => item(param));
 	}
 
 }

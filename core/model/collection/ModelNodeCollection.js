@@ -214,10 +214,6 @@ export default class ModelNodeCollection extends ObjectModel {
 		}
 	}
 
-	onChildDirty(child) {
-		this.makeDirty();
-	}
-
 	getStateInternal() {
 		const state = [];
 		this.children.forEach((ch) => state.push(ch.getState()));

@@ -34,6 +34,14 @@ export default class Collection extends NodeWithEvents {
 		return this.insert(element, 0);
 	}
 
+	removeInternal(index, element) {
+		if (index < 0 || !element) return false;
+		this.items.splice(index, 1);
+		this.triggerEvent('remove', element);
+		this.triggerEvent('change');
+		return element;
+	}
+
 	remove(element) {
 		const index = this.items.indexOf(element);
 		return this.removeInternal(index, element);
@@ -44,14 +52,6 @@ export default class Collection extends NodeWithEvents {
 			return this.removeInternal(index, this.items[index]);
 		}
 		return false;
-	}
-
-	removeInternal(index, element) {
-		if (index < 0 || !element) return false;
-		this.items.splice(index, 1);
-		this.triggerEvent('remove', element);
-		this.triggerEvent('change');
-		return element;
 	}
 
 	reset() {
