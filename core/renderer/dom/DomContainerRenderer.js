@@ -1,4 +1,5 @@
 import DomRenderer from "./DomRenderer";
+import DOMHelper from "../../helper/DOMHelper";
 
 export default class DomContainerRenderer extends DomRenderer {
 
@@ -17,12 +18,16 @@ export default class DomContainerRenderer extends DomRenderer {
 	}
 
 	activateInternal() {
-		this.container = this.addElement(this.tag, this.cls);
+		this.container = super.addElement(this.tag, this.cls);
 	}
 
 	deactivateInternal() {
-		this.removeElement(this.container);
+		super.removeElement(this.container);
 		this.container = null;
+	}
+
+	addElement(tag, css = null) {
+		return DOMHelper.createElement(this.container, tag, css);
 	}
 
 }
