@@ -1,11 +1,11 @@
 import ObjectModel from "../core/model/ObjectModel";
 import Vector2 from "../core/model/vector/Vector2";
 import ControlsModel from "./controls/ControlsModel";
-import ResourcesModel from "./resources/ResourcesModel";
-import NullableNode from "../core/model/value/NullableNode";
 import BoolValue from "../core/model/value/BoolValue";
 import GlobalAudioModel from "../core/audio/global/GlobalAudioModel";
-import AssetCache from "./resources/assets/AssetCache";
+import AssetCache from "./assets/AssetCache";
+import NullableNode from "../core/model/value/NullableNode";
+import ResourcesModel from "./resources/ResourcesModel";
 
 export default class GameModel extends ObjectModel {
 
@@ -54,11 +54,10 @@ export default class GameModel extends ObjectModel {
 
 		this.isInDebugMode = this.addProperty('isInDebugMode', new BoolValue(debugModeEnabled));
 		this.menu = this.addProperty('menu', new NullableNode());
-
 		this.viewBoxSize = this.addProperty('viewBoxSize', new Vector2());
 		this.saveGame = this.addProperty('saveGame', new NullableNode());
 		this.resources = this.addProperty('resources', new ResourcesModel());
-		this.assets = new AssetCache(this.resources);
+		this.assets = this.addProperty('assets', new AssetCache(this.resources));
 		this.audio = this.addProperty('audio', new GlobalAudioModel());
 		this.controls = this.addProperty('controls', new ControlsModel());
 	}

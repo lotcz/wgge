@@ -1,4 +1,4 @@
-import NodeWithEvents from "../../../../core/model/event/NodeWithEvents";
+import NodeWithEvents from "../../../core/model/event/NodeWithEvents";
 
 /**
  * Loads a single raw resource.

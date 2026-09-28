@@ -22,7 +22,7 @@ export default class IntValue extends DirtyValue {
 		return super.isEmpty() || Number.isNaN(this.value);
 	}
 
-	increase(num) {
+	increase(num = 1) {
 		this.set(this.get() + num);
 	}
 

@@ -33,9 +33,14 @@ export default class GameRenderer extends DomRenderer {
 			)
 		);
 
-		this.addAutoEvents(
-			this.model.assets,
-			['session-finished-loaders-changed', 'session-total-loaders-changed'],
+		this.addAutoEventMultiple(
+			[
+				this.model.assets.totalLoaders,
+				this.model.assets.blockingLoaders,
+				this.model.assets.sessionTotalLoaders,
+				this.model.assets.sessionFinishedLoaders
+			],
+			'changed',
 			() => this.updateLoading(),
 			true
 		);
@@ -70,7 +75,7 @@ export default class GameRenderer extends DomRenderer {
 	}
 
 	updateLoading() {
-		const isLoading = this.model.assets.blockingLoaders > 0;
+		const isLoading = this.model.assets.blockingLoaders.get() > 0;
 		if (this.loading && !isLoading) {
 			this.removeElement(this.loading);
 			this.loading = null;
@@ -86,9 +91,9 @@ export default class GameRenderer extends DomRenderer {
 				const progressWrapper = DOMHelper.createElement(content, 'div', 'progress-wrapper mt-2');
 				this.loadingProgress = DOMHelper.createElement(progressWrapper, 'div', 'stretch');
 			}
-			const portion = this.game.assets.sessionFinishedLoaders / this.game.assets.sessionTotalLoaders;
+			const portion = this.game.assets.sessionFinishedLoaders.get() / this.game.assets.sessionTotalLoaders.get();
 			this.loadingProgress.style.width = `${Math.round(portion * 100)}%`;
-			this.label2.innerText = `${this.game.assets.sessionFinishedLoaders}/${this.game.assets.sessionTotalLoaders}`;
+			this.label2.innerText = `${this.game.assets.sessionFinishedLoaders.get()}/${this.game.assets.sessionTotalLoaders.get()}`;
 		}
 	}
 

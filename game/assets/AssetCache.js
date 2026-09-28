@@ -1,19 +1,17 @@
-import Dictionary from "../../../core/Dictionary";
-import Collection from "../../../core/Collection";
+import Dictionary from "../../core/Dictionary";
+import Collection from "../../core/Collection";
 import ImageLoader from "./loader/ImageLoader";
 import AudioLoader from "./loader/AudioLoader";
-import NodeWithEvents from "../../../core/model/event/NodeWithEvents";
-import StringHelper from "../../../core/helper/StringHelper";
-
-const ASSET_TYPE_LOADERS = {
-	'aud': AudioLoader,
-	'img': ImageLoader
-}
+import NodeWithEvents from "../../core/model/event/NodeWithEvents";
+import StringHelper from "../../core/helper/StringHelper";
+import ObjectModel from "../../core/model/ObjectModel";
+import ResourcesModel from "../resources/ResourcesModel";
+import IntValue from "../../core/model/value/IntValue";
 
 /**
  * Keeps cached raw resources like images, sounds and 3D models
  */
-export default class AssetCache extends NodeWithEvents {
+export default class AssetCache extends ObjectModel {
 
 	/**
 	 * @type ResourcesModel
@@ -31,40 +29,56 @@ export default class AssetCache extends NodeWithEvents {
 	loaders;
 
 	/**
-	 * @type int
+	 * @type IntValue
 	 */
-	totalLoaders = 0;
+	totalLoaders;
 
 	/**
-	 * @type int
+	 * @type IntValue
 	 */
-	blockingLoaders = 0;
+	blockingLoaders;
 
 	/**
-	 * @type int
+	 * @type IntValue
 	 */
-	sessionTotalLoaders = 0;
+	sessionTotalLoaders;
 
 	/**
-	 * @type int
+	 * @type IntValue
 	 */
-	sessionFinishedLoaders = 0;
+	sessionFinishedLoaders;
 
 	constructor(resources) {
-		super();
+		super(false);
+
+		this.loaderClasses = new Dictionary(
+			{
+				'aud': AudioLoader,
+				'img': ImageLoader
+			}
+		);
 		this.resources = resources;
 		this.cache = new Dictionary();
 		this.loaders = new Collection();
+
+		this.totalLoaders = this.addProperty('totalLoaders', new IntValue(0));
+		this.blockingLoaders = this.addProperty('blockingLoaders', new IntValue(0));
+		this.sessionTotalLoaders = this.addProperty('sessionTotalLoaders', new IntValue(0));
+		this.sessionFinishedLoaders = this.addProperty('sessionFinishedLoaders', new IntValue(0));
+
 		this.loaders.addOnAddListener((loader) => this.loaderAdded(loader));
 		this.loaders.addOnRemoveListener((loader) => this.loaderRemoved(loader));
 
 	}
 
+	registerLoaderClass(id, cls) {
+		this.loaderClasses.set(id, cls);
+	}
+
 	loaderAdded(loader) {
 		this.updateLoadingState();
 		if (!loader.isPreloading) {
-			this.sessionTotalLoaders++;
-			this.triggerEvent('session-total-loaders-changed', this.sessionTotalLoaders);
+			this.sessionTotalLoaders.increase();
 		}
 
 	}
@@ -72,31 +86,23 @@ export default class AssetCache extends NodeWithEvents {
 	loaderRemoved(loader) {
 		this.updateLoadingState();
 		if (!loader.isPreloading) {
-			this.sessionFinishedLoaders++;
-			if (this.blockingLoaders === 0) {
-				this.sessionFinishedLoaders = 0;
-				this.sessionTotalLoaders = 0;
+			this.sessionFinishedLoaders.increase();
+			if (this.blockingLoaders.equalsTo(0)) {
+				this.sessionFinishedLoaders.set(0);
+				this.sessionTotalLoaders.set(0);
 			}
-			this.triggerEvent('session-finished-loaders-changed', this.sessionFinishedLoaders);
 		}
 	}
 
 	updateLoadingState() {
-		const total = this.loaders.count();
-		if (this.totalLoaders !== total) {
-			this.totalLoaders = total;
-			this.triggerEvent('total-loaders-changed', total);
-		}
+		this.totalLoaders.set(this.loaders.count());
 		const blocking = this.loaders.filter((l) => l.isPreloading === false).length;
-		if (this.blockingLoaders !== blocking) {
-			this.blockingLoaders = blocking;
-			this.triggerEvent('blocking-loaders-changed', blocking);
-		}
+		this.blockingLoaders.set(blocking);
 	}
 
-	resetCache(name = null) {
-		if (name) {
-			this.cache.remove(name);
+	resetCache(uri = null) {
+		if (uri) {
+			this.cache.remove(uri);
 		} else {
 			this.cache.reset();
 		}
@@ -108,14 +114,14 @@ export default class AssetCache extends NodeWithEvents {
 		this.loaders.remove(loader);
 	}
 
-	loaderSucceeded(loader, resource, onLoaded) {
+	loaderSucceeded(loader, asset, onLoaded) {
 		if (this.cache.exists(loader.uri)) {
-			this.cache.set(loader.uri, resource);
-			console.warn(`Resource ${loader.uri} was already present then loaded and replaced.`);
+			this.cache.set(loader.uri, asset);
+			console.warn(`Asset ${loader.uri} was already present then loaded and replaced.`);
 		} else {
-			this.cache.add(loader.uri, resource);
+			this.cache.add(loader.uri, asset);
 		}
-		if (onLoaded) onLoaded(resource);
+		if (onLoaded) onLoaded(asset);
 		this.loaders.remove(loader);
 	}
 
@@ -139,12 +145,11 @@ export default class AssetCache extends NodeWithEvents {
 			}
 
 			const assetType = StringHelper.extractId(uri, 0);
-			if (ASSET_TYPE_LOADERS[assetType] === undefined) {
+			const loaderClass = this.loaderClasses.get(assetType);
+			if (!loaderClass) {
 				console.error(`Valid resource type could not be inferred from URI '${uri}'!`);
 			}
-
-			const loaderType = ASSET_TYPE_LOADERS[assetType];
-			const loader = new loaderType(this, uri, onLoaded === null);
+			const loader = new loaderClass(this, uri, onLoaded === null);
 			this.loaders.add(loader);
 			loader.load(
 				(resource) => this.loaderSucceeded(loader, resource, onLoaded),
