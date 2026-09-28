@@ -36,7 +36,7 @@ export default class AssetCache extends ObjectModel {
 	/**
 	 * @type IntValue
 	 */
-	blockingLoaders;
+	preloadingLoaders;
 
 	/**
 	 * @type IntValue
@@ -62,7 +62,7 @@ export default class AssetCache extends ObjectModel {
 		this.loaders = new Collection();
 
 		this.totalLoaders = this.addProperty('totalLoaders', new IntValue(0));
-		this.blockingLoaders = this.addProperty('blockingLoaders', new IntValue(0));
+		this.preloadingLoaders = this.addProperty('preloadingLoaders', new IntValue(0));
 		this.sessionTotalLoaders = this.addProperty('sessionTotalLoaders', new IntValue(0));
 		this.sessionFinishedLoaders = this.addProperty('sessionFinishedLoaders', new IntValue(0));
 
@@ -75,29 +75,23 @@ export default class AssetCache extends ObjectModel {
 		this.loaderClasses.set(id, cls);
 	}
 
-	loaderAdded(loader) {
-		this.updateLoadingState();
-		if (!loader.isPreloading) {
-			this.sessionTotalLoaders.increase();
-		}
+	updateLoadingState() {
+		this.totalLoaders.set(this.loaders.count());
+		this.preloadingLoaders.set(this.loaders.count((l) => l.isPreloading));
+	}
 
+	loaderAdded(loader) {
+		if (this.totalLoaders.equalsTo(0)) {
+			this.sessionFinishedLoaders.set(0);
+			this.sessionTotalLoaders.set(0);
+		}
+		this.updateLoadingState();
+		this.sessionTotalLoaders.increase();
 	}
 
 	loaderRemoved(loader) {
 		this.updateLoadingState();
-		if (!loader.isPreloading) {
-			this.sessionFinishedLoaders.increase();
-			if (this.blockingLoaders.equalsTo(0)) {
-				this.sessionFinishedLoaders.set(0);
-				this.sessionTotalLoaders.set(0);
-			}
-		}
-	}
-
-	updateLoadingState() {
-		this.totalLoaders.set(this.loaders.count());
-		const blocking = this.loaders.filter((l) => l.isPreloading === false).length;
-		this.blockingLoaders.set(blocking);
+		this.sessionFinishedLoaders.increase();
 	}
 
 	resetCache(uri = null) {

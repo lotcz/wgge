@@ -36,11 +36,11 @@ export default class GameRenderer extends DomRenderer {
 		this.addAutoEventMultiple(
 			[
 				this.model.assets.totalLoaders,
-				this.model.assets.blockingLoaders,
+				this.model.assets.preloadingLoaders,
 				this.model.assets.sessionTotalLoaders,
 				this.model.assets.sessionFinishedLoaders
 			],
-			'changed',
+			'change',
 			() => this.updateLoading(),
 			true
 		);
@@ -75,7 +75,7 @@ export default class GameRenderer extends DomRenderer {
 	}
 
 	updateLoading() {
-		const isLoading = this.model.assets.blockingLoaders.get() > 0;
+		const isLoading = this.model.assets.totalLoaders.get() > 0;
 		if (this.loading && !isLoading) {
 			this.removeElement(this.loading);
 			this.loading = null;

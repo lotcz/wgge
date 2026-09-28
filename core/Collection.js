@@ -63,8 +63,9 @@ export default class Collection extends NodeWithEvents {
 		return this.count() <= 0;
 	}
 
-	count() {
-		return this.items.length;
+	count(filter = null) {
+		if (!filter) return this.items.length;
+		return this.items.reduce((prev, current) => filter(current) ? prev + 1 : prev, 0);
 	}
 
 	contains(item) {
