@@ -62,7 +62,7 @@ export default class ModelNodeTable extends ModelNodeCollection {
 	 */
 	remove(node) {
 		const removed = super.remove(node);
-		if (removed) this.cache.set(node.id.get(), undefined);
+		if (removed) this.cache.delete(node.id.get());
 		return removed;
 	}
 
