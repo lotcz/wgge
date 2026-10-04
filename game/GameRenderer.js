@@ -83,12 +83,9 @@ export default class GameRenderer extends DomRenderer {
 		if (isLoading) {
 			if (!this.loading) {
 				this.loading = DOMHelper.createElement(this.loadingLayer, 'div', 'loading-overlay');
-				const paper = DOMHelper.createElement(this.loading, 'div');
-				const inner = DOMHelper.createElement(paper, 'div', 'inner p-3');
-				const content = DOMHelper.createElement(inner, 'div', 'm-3 p-3');
-				const label1 = DOMHelper.createElement(content, 'h2', 'loading-title');
-				this.label2 = DOMHelper.createElement(content, 'div', 'center');
-				const progressWrapper = DOMHelper.createElement(content, 'div', 'progress-wrapper mt-2');
+				const inner = DOMHelper.createElement(this.loading, 'div', 'loading-overlay-inner');
+				this.label2 = DOMHelper.createElement(inner, 'div', 'center');
+				const progressWrapper = DOMHelper.createElement(inner, 'div', 'progress-wrapper');
 				this.loadingProgress = DOMHelper.createElement(progressWrapper, 'div', 'stretch');
 			}
 			const portion = this.game.assets.sessionFinishedLoaders.get() / this.game.assets.sessionTotalLoaders.get();

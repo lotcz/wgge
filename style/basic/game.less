@@ -94,25 +94,21 @@ h1, h2, h3, h4 {
 		justify-content: center;
 		z-index: 9999;
 		pointer-events: none;
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-position: center center;
-
+		background-color: @black;
 		color: @white;
 
-		div {
-			border-radius: @m-2;
-		}
+		.loading-overlay-inner {
 
-		.progress-wrapper {
-			border-width: 1px;
-			padding: 1px;
-			border-style: solid;
-			border-color: @white;
+			.progress-wrapper {
+				border-width: 1px;
+				padding: 1px;
+				border-style: solid;
+				border-color: @white;
 
-			div {
-				height: @m-2;
-				background-color: @white;
+				div {
+					height: @m-2;
+					background-color: @white;
+				}
 			}
 		}
 	}
