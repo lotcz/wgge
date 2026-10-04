@@ -1,11 +1,12 @@
 import DirtyValue from "../value/DirtyValue";
+import FloatValue from "../value/FloatValue";
 
 const ROTATION_RANGE = 2 * Math.PI;
 
 /**
  * Keeps track of rotation in radians that is always in interval (-pi, +pi> which equals to (-180, 180> degrees
  */
-export default class Rotation extends DirtyValue {
+export default class Rotation extends FloatValue {
 
 	static normalizeValue(rads) {
 		let result = rads % ROTATION_RANGE;
@@ -30,6 +31,10 @@ export default class Rotation extends DirtyValue {
 		return degs * Math.PI / 180;
 	}
 
+	static fromDegrees(degs) {
+		return new Rotation(Rotation.degToRad(degs));
+	}
+
 	set(rads) {
 		super.set(Rotation.normalizeValue(rads));
 	}
@@ -40,6 +45,10 @@ export default class Rotation extends DirtyValue {
 
 	subtract(value) {
 		return new Rotation(Rotation.diff(this.get(), value));
+	}
+
+	invert() {
+		return this.add(Math.PI);
 	}
 
 	equalsTo(value) {

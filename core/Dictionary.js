@@ -1,8 +1,6 @@
 import NodeWithEvents from "./model/event/NodeWithEvents";
 import ChangeEvent from "./model/event/ChangeEvent";
 
-const DEBUG_HASH_TABLE = false;
-
 /**
  * Triggers Events: add, set, remove
  */

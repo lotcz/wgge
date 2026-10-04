@@ -5,18 +5,25 @@ import ModelNodeCollection from "../ModelNodeCollection";
  */
 export default class ModelNodeTable extends ModelNodeCollection {
 
+	cache = new Map();
+
+	/**
+	 *
+	 * @param {number|string|DirtyValue|null|undefined} id
+	 * @returns {*|undefined}
+	 */
 	getById(id) {
-		if (id === null || id === undefined || id === '') {
-			return null;
+		if (typeof id === 'number') {
+			if (id === Number.NaN || id <= 0) return undefined;
+			return this.cache.get(id);
+		}
+		if (typeof id === 'string') {
+			return this.getById(Number(id));
 		}
 		if (typeof id === 'object' && typeof id.get === 'function') {
 			return this.getById(id.get());
 		}
-		const i = Number(id);
-		if (i === Number.NaN || i <= 0) {
-			return null;
-		}
-		return this.children.find((ch) => ch.id.equalsTo(i));
+		return undefined;
 	}
 
 	get(id) {
@@ -34,6 +41,10 @@ export default class ModelNodeTable extends ModelNodeCollection {
 		return this.maxId() + 1;
 	}
 
+	/**
+	 * @param {IdentifiedModelNode} node
+	 * @returns {IdentifiedModelNode}
+	 */
 	add(node) {
 		const id = this.nextId();
 		if (!node) {
@@ -41,13 +52,26 @@ export default class ModelNodeTable extends ModelNodeCollection {
 		}
 		node.id.set(id);
 		super.add(node);
+		this.cache.set(id, node);
 		return node;
 	}
 
-	addClone(node) {
-		const clone = node.clone();
-		clone.id.set(this.nextId());
-		return this.insert(clone, this.indexOf(node) + 1);
+	/**
+	 * @param {IdentifiedModelNode} node
+	 * @returns {IdentifiedModelNode}
+	 */
+	remove(node) {
+		const removed = super.remove(node);
+		if (removed) this.cache.set(node.id.get(), undefined);
+		return removed;
+	}
+
+	restoreStateInternal(state) {
+		this.cache.clear();
+		super.restoreStateInternal(state);
+		this.forEach(
+			(node) => this.cache.set(node.id.get(), node)
+		);
 	}
 
 }

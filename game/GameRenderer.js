@@ -82,11 +82,11 @@ export default class GameRenderer extends DomRenderer {
 		}
 		if (isLoading) {
 			if (!this.loading) {
-				this.loading = DOMHelper.createElement(this.loadingLayer, 'div', 'loading');
+				this.loading = DOMHelper.createElement(this.loadingLayer, 'div', 'loading-overlay');
 				const paper = DOMHelper.createElement(this.loading, 'div');
 				const inner = DOMHelper.createElement(paper, 'div', 'inner p-3');
 				const content = DOMHelper.createElement(inner, 'div', 'm-3 p-3');
-				const label1 = DOMHelper.createElement(content, 'h2', null, 'Nahrávám');
+				const label1 = DOMHelper.createElement(content, 'h2', 'loading-title');
 				this.label2 = DOMHelper.createElement(content, 'div', 'center');
 				const progressWrapper = DOMHelper.createElement(content, 'div', 'progress-wrapper mt-2');
 				this.loadingProgress = DOMHelper.createElement(progressWrapper, 'div', 'stretch');
