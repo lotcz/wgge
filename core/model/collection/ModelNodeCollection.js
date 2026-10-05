@@ -239,4 +239,13 @@ export default class ModelNodeCollection extends ObjectModel {
 		return ArrayHelper.unique(result);
 	}
 
+	/**
+	 * This will empty the collection and remove registered handlers.
+	 * Child nodes themselves will not be disposed!
+	 */
+	dispose() {
+		this.reset();
+		super.dispose();
+	}
+
 }

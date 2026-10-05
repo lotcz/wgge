@@ -39,4 +39,8 @@ export default class EventManager {
 		handlers.forEach((item) => item(param));
 	}
 
+	reset() {
+		this.handlers = [];
+	}
+
 }

@@ -5,7 +5,7 @@ import ModelBase from "./ModelBase";
 export default class ObjectModel extends ModelBase {
 
 	/**
-	 * @type Dictionary<DirtyValue>
+	 * @type {Dictionary<ModelBase>}
 	 */
 	properties;
 
@@ -108,6 +108,22 @@ export default class ObjectModel extends ModelBase {
 
 	getResourcesForPreloadInternal() {
 		return [];
+	}
+
+	/**
+	 * Use this to release all event handlers that might be registered.
+	 * Object won't be usable after calling this.
+	 * Not calling this when object is meant to be destroyed might lead to memory leaks e.g. when using NullableNode
+	 */
+	dispose() {
+		this.properties.forEach(
+			(name, prop) => {
+				if (typeof prop.dispose === 'function') prop.dispose();
+			}
+		);
+		// this should not be necessary
+		// this.properties.reset();
+		// this.eventManager.reset();
 	}
 
 }

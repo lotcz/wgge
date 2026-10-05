@@ -1,6 +1,7 @@
 import ModelBase from "../ModelBase";
 
 export default class DirtyValue extends ModelBase {
+
 	/** @type object|string|null */
 	value = null;
 

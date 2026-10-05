@@ -2,6 +2,7 @@ import DirtyValue from "./DirtyValue";
 import {EVENT_REMOVE_ME} from "../ModelBase";
 
 export default class NullableNode extends DirtyValue {
+
 	nodeFactory;
 
 	/**
@@ -63,5 +64,9 @@ export default class NullableNode extends DirtyValue {
 			return this.value.getResourcesForPreload();
 		}
 		return [];
+	}
+
+	dispose() {
+		this.set(null);
 	}
 }
