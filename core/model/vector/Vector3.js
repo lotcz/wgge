@@ -1,12 +1,14 @@
 import ModelBase from "../ModelBase";
 
+export const ZERO_VECTOR3 = new Vector3(0, 0, 0);
+
 export default class Vector3 extends ModelBase {
 	x;
 	y;
 	z;
 
-	constructor(x, y, z) {
-		super();
+	constructor(x = undefined, y = undefined, z = undefined, persistent = true) {
+		super(persistent);
 
 		this.x = 0;
 		this.y = 0;
@@ -27,7 +29,7 @@ export default class Vector3 extends ModelBase {
 		return (v) ? this.x === v.x && this.y === v.y && this.z === v.z : false;
 	}
 
-	set(x, y, z) {
+	set(x, y = undefined, z = undefined) {
 		if (y === undefined && typeof x === 'object') {
 			this.set(x.x, x.y, x.z);
 			return;
@@ -110,4 +112,7 @@ export default class Vector3 extends ModelBase {
 		return this.subtract(v).size();
 	}
 
+	static zero() {
+		return ZERO_VECTOR3;
+	}
 }

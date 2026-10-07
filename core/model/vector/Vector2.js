@@ -2,11 +2,13 @@ import ObjectModel from "../ObjectModel";
 import Rotation from "./Rotation";
 import NumberHelper from "../../helper/NumberHelper";
 
+export const ZERO_VECTOR2 = new Vector2(0, 0);
+
 export default class Vector2 extends ObjectModel {
 	x;
 	y;
 
-	constructor(x, y, persistent) {
+	constructor(x = undefined, y = undefined, persistent = true) {
 		super(persistent);
 
 		this.x = 0;
@@ -198,6 +200,10 @@ export default class Vector2 extends ObjectModel {
 
 	removeOnChangeListener(eventHandler) {
 		this.removeEventListener('change', eventHandler);
+	}
+
+	static zero() {
+		return ZERO_VECTOR2;
 	}
 
 	toString(decimals = 2) {

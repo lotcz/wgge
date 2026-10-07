@@ -6,4 +6,5 @@ Change version in `package.json`.
 
 Then run:
 
-    npm publish
+	bin/login.cmd
+    bin/publish.cmd
