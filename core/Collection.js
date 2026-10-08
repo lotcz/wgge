@@ -1,4 +1,5 @@
 import NodeWithEvents from "./model/event/NodeWithEvents";
+import ArrayHelper from "./helper/ArrayHelper";
 
 export default class Collection extends NodeWithEvents {
 
@@ -21,6 +22,10 @@ export default class Collection extends NodeWithEvents {
 		this.triggerEvent('add', element);
 		this.triggerEvent('change');
 		return element;
+	}
+
+	get(index) {
+		return this.items[index];
 	}
 
 	insert(element, index) {
@@ -126,6 +131,11 @@ export default class Collection extends NodeWithEvents {
 
 	sort(sortFunc) {
 		return this.items.sort(sortFunc);
+	}
+
+	random() {
+		if (this.isEmpty()) return undefined;
+		return this.get(ArrayHelper.randomIndex(this.count()-1));
 	}
 
 	addOnRemoveListener(listener) {

@@ -2,10 +2,12 @@ import ObjectModel from "../ObjectModel";
 import Rotation from "./Rotation";
 import NumberHelper from "../../helper/NumberHelper";
 
-export const ZERO_VECTOR2 = new Vector2(0, 0);
-
 export default class Vector2 extends ObjectModel {
+
+	_isVector2 = true;
+
 	x;
+
 	y;
 
 	constructor(x = undefined, y = undefined, persistent = true) {
@@ -25,6 +27,11 @@ export default class Vector2 extends ObjectModel {
 		}
 	}
 
+	static isVector2(v) {
+		if (v === null || v === undefined) return false;
+		return typeof v === 'object' && v._isVector2;
+	}
+
 	distanceTo(v) {
 		return Math.sqrt(Math.pow(this.x - v.x, 2) + Math.pow(this.y - v.y, 2));
 	}
@@ -39,7 +46,7 @@ export default class Vector2 extends ObjectModel {
 	 * @param y Number|undefined
 	 */
 	set(x, y = undefined) {
-		if (y === undefined && typeof x === 'object') {
+		if (y === undefined && Vector2.isVector2(x)) {
 			this.set(x.x, x.y);
 			return;
 		}
@@ -210,3 +217,5 @@ export default class Vector2 extends ObjectModel {
 		return `[${NumberHelper.round(this.x, decimals)},${NumberHelper.round(this.y, decimals)}]`;
 	}
 }
+
+export const ZERO_VECTOR2 = new Vector2(0, 0);

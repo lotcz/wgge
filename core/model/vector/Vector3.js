@@ -1,10 +1,14 @@
 import ModelBase from "../ModelBase";
-
-export const ZERO_VECTOR3 = new Vector3(0, 0, 0);
+import NumberHelper from "../../helper/NumberHelper";
 
 export default class Vector3 extends ModelBase {
+
+	_isVector3 = true;
+
 	x;
+
 	y;
+
 	z;
 
 	constructor(x = undefined, y = undefined, z = undefined, persistent = true) {
@@ -14,15 +18,16 @@ export default class Vector3 extends ModelBase {
 		this.y = 0;
 		this.z = 0;
 
-		if (y === undefined && typeof x === 'object') {
-			if (x.length === 3) {
-				this.setFromArray(x);
-			} else {
-				this.set(x);
-			}
+		if (y === undefined && Vector3.isVector3(x)) {
+			this.set(x.x, x.y, x.z);
 		} else if (x !== undefined && z !== undefined) {
 			this.set(x, y, z);
 		}
+	}
+
+	static isVector3(v) {
+		if (v === null || v === undefined) return false;
+		return typeof v === 'object' && v._isVector3;
 	}
 
 	equalsTo(v) {
@@ -30,9 +35,8 @@ export default class Vector3 extends ModelBase {
 	}
 
 	set(x, y = undefined, z = undefined) {
-		if (y === undefined && typeof x === 'object') {
-			this.set(x.x, x.y, x.z);
-			return;
+		if (y === undefined && Vector3.isVector3(x)) {
+			return this.set(x.x, x.y, x.z);
 		}
 
 		x = Number(x);
@@ -47,6 +51,8 @@ export default class Vector3 extends ModelBase {
 			this.makeDirty();
 			this.triggerEvent('change', {oldValue: old, newValue: this});
 		}
+
+		return this;
 	}
 
 	add(v) {
@@ -89,21 +95,6 @@ export default class Vector3 extends ModelBase {
 		this.setFromArray(state);
 	}
 
-	asRgbColor() {
-		return `rgb(${Math.round(this.x)}, ${Math.round(this.y)}, ${Math.round(this.z)})`;
-	}
-
-	/**
-	 * Components in 0-1 range (three.js style)
-	 * @returns {number}
-	 */
-	asHexColor() {
-		const r = Math.round(Math.min(Math.max(this.x, 0), 1) * 255);
-		const g = Math.round(Math.min(Math.max(this.y, 0), 1) * 255);
-		const b = Math.round(Math.min(Math.max(this.z, 0), 1) * 255);
-		return (r << 16) | (g << 8) | b;
-	}
-
 	size() {
 		return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
 	}
@@ -115,4 +106,10 @@ export default class Vector3 extends ModelBase {
 	static zero() {
 		return ZERO_VECTOR3;
 	}
+
+	toString(decimals = 2) {
+		return `[${NumberHelper.round(this.x, decimals)},${NumberHelper.round(this.y, decimals)},${NumberHelper.round(this.z, decimals)}]`;
+	}
 }
+
+export const ZERO_VECTOR3 = new Vector3(0, 0, 0);
