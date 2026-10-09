@@ -135,7 +135,7 @@ export default class Collection extends NodeWithEvents {
 
 	random() {
 		if (this.isEmpty()) return undefined;
-		return this.get(ArrayHelper.randomIndex(this.count()-1));
+		return this.get(ArrayHelper.randomIndex(this.count()));
 	}
 
 	addOnRemoveListener(listener) {

@@ -50,9 +50,11 @@ export default class ModelNodeTable extends ModelNodeCollection {
 		if (!node) {
 			node = this.nodeFactory(id);
 		}
-		node.id.set(id);
+		if (node.id.isEmpty() || node.id.equalsTo(0)) {
+			node.id.set(id);
+		}
 		super.add(node);
-		this.cache.set(id, node);
+		this.cache.set(node.id.get(), node);
 		return node;
 	}
 
