@@ -26,7 +26,7 @@ export default class ControllerBase extends ActivatedTreeNode {
 		this.game = game;
 		this.model = model;
 
-		this.updateActions = null;
+		this.updateActions = [];
 	}
 
 	update(delta) {
@@ -34,16 +34,21 @@ export default class ControllerBase extends ActivatedTreeNode {
 			return;
 		}
 
-		if (this.updateActions) {
-			while (this.updateActions.length > 0) {
-				const action = this.updateActions.shift();
-				action(delta);
+		if (this.updateActions.length > 0) {
+			for (let i = 0, max = this.updateActions.length; i < max; i++) {
+				this.updateActions[i](delta);
 			}
-			this.updateActions = null;
+			this.updateActions = [];
 		}
 
 		this.updateInternal(delta);
-		this.children.forEach((c) => c.update(delta));
+
+		for (let i = 0, max = this.children.length; i < max; i++) {
+			const child = this.children[i];
+			if (!child.isRemoved) child.update(delta);
+		}
+
+		this.updateRemovedChildren();
 	}
 
 	updateInternal(delta) {
@@ -55,9 +60,6 @@ export default class ControllerBase extends ActivatedTreeNode {
 	 * @param action (delta) => any
 	 */
 	runOnUpdate(action) {
-		if (!this.updateActions) {
-			this.updateActions = [];
-		}
 		this.updateActions.push(action);
 	}
 

@@ -18,6 +18,11 @@ export default class ActivatedTreeNode {
 	isActivated;
 
 	/**
+	 * @type boolean
+	 */
+	isRemoved= false;
+
+	/**
 	 *
 	 * @type array
 	 * @type param.node {ModelNode}
@@ -25,6 +30,11 @@ export default class ActivatedTreeNode {
 	 * @type param.handler {(ep) => any}
 	 */
 	autoRegisterEvents = null;
+
+	/**
+	 * @type number
+	 */
+	childrenRemoved = 0;
 
 	constructor() {
 		this.isActivated = false;
@@ -55,24 +65,19 @@ export default class ActivatedTreeNode {
 	}
 
 	hasChildren() {
-		return this.children.length > 0;
+		return this.children.length > this.childrenRemoved;
 	}
 
 	removeChild(node) {
 		const index = this.children.indexOf(node);
 		if (index >= 0) {
-			this.children.splice(index, 1);
+			this.childrenRemoved++;
 			node.deactivate();
+			node.isRemoved = true;
 			node.parent = null;
 			return node;
 		}
-		for (let i = 0, max = this.children.length; i < max; i++) {
-			const child = this.children[i];
-			const result = child.removeChild(node);
-			if (result) {
-				return result;
-			}
-		}
+		return undefined;
 	}
 
 	removeMyself() {
@@ -84,16 +89,21 @@ export default class ActivatedTreeNode {
 	}
 
 	resetChildren() {
-		this.children.forEach((child) => child.deactivate());
+		for (let i = 0, max = this.children.length; i < max; i++) {
+			this.children[i].deactivate();
+		}
 		this.children = [];
+		this.childrenRemoved = 0;
 	}
 
-	forEach(func) {
-		func(this);
+	updateRemovedChildren() {
+		if (this.childrenRemoved === 0) return;
+		let w = 0;
 		for (let i = 0, max = this.children.length; i < max; i++) {
-			const child = this.children[i];
-			child.forEach(func);
+			if (!this.children[i].isRemoved) this.children[w++] = this.children[i];
 		}
+		this.children.length = w;
+		this.childrenRemoved = 0;
 	}
 
 	activate() {

@@ -20,7 +20,6 @@ export default class RendererBase extends ActivatedTreeNode {
 		super();
 		this.game = game;
 		this.model = model;
-
 	}
 
 	render() {
@@ -30,8 +29,16 @@ export default class RendererBase extends ActivatedTreeNode {
 		if (!this.isActivated) {
 			return;
 		}
+
 		this.renderInternal();
-		this.children.forEach((c) => c.render());
+
+		for (let i = 0, max = this.children.length; i < max; i++) {
+			const child = this.children[i];
+			if (!child.isRemoved) child.render();
+		}
+
+		this.updateRemovedChildren();
+
 		if (this.isRoot()) {
 			this.model.clean();
 		}
