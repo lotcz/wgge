@@ -181,7 +181,7 @@ export default class ActivatedTreeNode {
 	}
 
 	addAutoEvents(node, events, handler, runOnActivate = false) {
-		events.forEach((event) => this.addAutoEvent(node, event, handler, runOnActivate));
+		events.forEach((event, i) => this.addAutoEvent(node, event, handler, i === 0 && runOnActivate));
 	}
 
 	addAutoEventMultiple(nodes, event, handler, runOnActivate = false) {
