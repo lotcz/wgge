@@ -24,7 +24,7 @@ export default class ActivatedTreeNode {
 
 	/**
 	 *
-	 * @type array
+	 * @type array|null
 	 * @type param.node {ModelNode}
 	 * @type param.event {string}
 	 * @type param.handler {(ep) => any}
@@ -111,17 +111,22 @@ export default class ActivatedTreeNode {
 			this.activateInternal();
 
 			if (this.autoRegisterEvents) {
-				this.autoRegisterEvents.forEach((event) => {
+				const events = this.autoRegisterEvents;
+				for (let i = 0, max = events.length; i < max; i++) {
+					const event = events[i];
 					event.node.addEventListener(event.name, event.handler);
 					if (event.runOnActivate) {
 						event.handler();
 					}
-				});
+				}
 			}
 
-			this.children.forEach((c) => c.activate());
-			this.isActivated = true;
+			const children = this.children;
+			for (let i = 0, max = children.length; i < max; i++) {
+				children[i].activate();
+			}
 
+			this.isActivated = true;
 			this.afterActivatedInternal();
 		}
 	}
@@ -137,12 +142,18 @@ export default class ActivatedTreeNode {
 	deactivate() {
 		if (this.isActivated) {
 			if (this.autoRegisterEvents) {
-				this.autoRegisterEvents.forEach((event) => {
+				const events = this.autoRegisterEvents;
+				for (let i = 0, max = events.length; i < max; i++) {
+					const event = events[i];
 					event.node.removeEventListener(event.name, event.handler);
-				});
+				}
 			}
 
-			this.children.forEach((c) => c.deactivate());
+			const children = this.children;
+			for (let i = 0, max = children.length; i < max; i++) {
+				children[i].deactivate();
+			}
+
 			this.deactivateInternal();
 			this.isActivated = false;
 		}

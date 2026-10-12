@@ -14,4 +14,8 @@ export default class BoolValue extends DirtyValue {
 		this.set(!this.get());
 	}
 
+	toggle() {
+		this.invert();
+	}
+
 }

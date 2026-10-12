@@ -4,7 +4,7 @@ export default class TimeoutController extends ControllerBase {
 
 	/**
 	 *
-	 * @param {DemoGameModel} game
+	 * @param {GameModel} game
 	 * @param {Number} duration
 	 * @param {function} onFinished
 	 */
