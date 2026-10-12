@@ -71,10 +71,11 @@ export default class DOMHelper {
 	}
 
 	static isFullscreen() {
-		return (window.fullScreen || (window.innerWidth == screen.width && window.innerHeight == screen.height))
+		return (document.fullscreenElement !== null) || (window.innerWidth === screen.width && window.innerHeight === screen.height);
 	}
 
-	static openFullscreen(elem) {
+	static openFullscreen(elem = null) {
+		if (!elem) elem = document.body;
 		if (elem.requestFullscreen) {
 			elem.requestFullscreen();
 		} else if (elem.webkitRequestFullscreen) { /* Safari */
@@ -87,7 +88,9 @@ export default class DOMHelper {
 
 	static closeFullscreen() {
 		if (document.exitFullscreen) {
-			document.exitFullscreen();
+			document.exitFullscreen()
+				.then(() => console.log('Switched to fullscreen'))
+				.catch((e) => console.error('Fullscreen failed', e));
 		} else if (document.webkitExitFullscreen) { /* Safari */
 			document.webkitExitFullscreen();
 		} else if (document.msExitFullscreen) { /* IE11 */
