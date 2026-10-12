@@ -69,6 +69,16 @@ export default class AssetCache extends ObjectModel {
 		this.loaders.addOnAddListener((loader) => this.loaderAdded(loader));
 		this.loaders.addOnRemoveListener((loader) => this.loaderRemoved(loader));
 
+		this.totalLoaders.addEventListener(
+			'change',
+			() => {
+				if (this.totalLoaders.equalsTo(0)) {
+					this.sessionFinishedLoaders.set(0);
+					this.sessionTotalLoaders.set(0);
+				}
+			}
+		);
+
 	}
 
 	registerLoaderClass(id, cls) {
@@ -81,10 +91,6 @@ export default class AssetCache extends ObjectModel {
 	}
 
 	loaderAdded(loader) {
-		if (this.totalLoaders.equalsTo(0)) {
-			this.sessionFinishedLoaders.set(0);
-			this.sessionTotalLoaders.set(0);
-		}
 		this.updateLoadingState();
 		this.sessionTotalLoaders.increase();
 	}
