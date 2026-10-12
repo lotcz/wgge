@@ -28,10 +28,10 @@ export default class NodeWithEvents {
 			this.eventManager.triggerEvent(eventName, param);
 		}
 	}
-
+/*
 	static isNodeWithEvents(node) {
 		if (!node) return false;
 		return (typeof node === 'object' && typeof node.addEventListener === 'function');
 	}
-
+*/
 }

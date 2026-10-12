@@ -20,7 +20,7 @@ export default class ActivatedTreeNode {
 	/**
 	 * @type boolean
 	 */
-	isRemoved= false;
+	isRemoved = false;
 
 	/**
 	 *
@@ -107,28 +107,29 @@ export default class ActivatedTreeNode {
 	}
 
 	activate() {
-		if (!this.isActivated) {
-			this.activateInternal();
+		if (this.isActivated) return;
 
-			if (this.autoRegisterEvents) {
-				const events = this.autoRegisterEvents;
-				for (let i = 0, max = events.length; i < max; i++) {
-					const event = events[i];
-					event.node.addEventListener(event.name, event.handler);
-					if (event.runOnActivate) {
-						event.handler();
-					}
+		this.activateInternal();
+
+		if (this.autoRegisterEvents) {
+			const events = this.autoRegisterEvents;
+			for (let i = 0, max = events.length; i < max; i++) {
+				const event = events[i];
+				event.node.addEventListener(event.name, event.handler);
+				if (event.runOnActivate) {
+					event.handler();
 				}
 			}
-
-			const children = this.children;
-			for (let i = 0, max = children.length; i < max; i++) {
-				children[i].activate();
-			}
-
-			this.isActivated = true;
-			this.afterActivatedInternal();
 		}
+
+		const children = this.children;
+		for (let i = 0, max = children.length; i < max; i++) {
+			children[i].activate();
+		}
+
+		this.isActivated = true;
+		this.afterActivatedInternal();
+
 	}
 
 	activateInternal() {
@@ -140,23 +141,23 @@ export default class ActivatedTreeNode {
 	}
 
 	deactivate() {
-		if (this.isActivated) {
-			if (this.autoRegisterEvents) {
-				const events = this.autoRegisterEvents;
-				for (let i = 0, max = events.length; i < max; i++) {
-					const event = events[i];
-					event.node.removeEventListener(event.name, event.handler);
-				}
-			}
+		if (!this.isActivated) return;
 
-			const children = this.children;
-			for (let i = 0, max = children.length; i < max; i++) {
-				children[i].deactivate();
+		if (this.autoRegisterEvents) {
+			const events = this.autoRegisterEvents;
+			for (let i = 0, max = events.length; i < max; i++) {
+				const event = events[i];
+				event.node.removeEventListener(event.name, event.handler);
 			}
-
-			this.deactivateInternal();
-			this.isActivated = false;
 		}
+
+		const children = this.children;
+		for (let i = 0, max = children.length; i < max; i++) {
+			children[i].deactivate();
+		}
+
+		this.deactivateInternal();
+		this.isActivated = false;
 	}
 
 	deactivateInternal() {

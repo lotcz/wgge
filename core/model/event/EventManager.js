@@ -1,46 +1,53 @@
 const DEBUG_EVENT_MANAGER = false;
 
 export default class EventManager {
-	handlers;
 
-	constructor() {
-		this.handlers = [];
-	}
+	handlers = new Map();
 
 	addEventListener(eventName, eventHandler) {
-		if (!this.handlers[eventName]) {
-			this.handlers[eventName] = [];
+		if (!this.handlers.has(eventName)) {
+			this.handlers.set(eventName, [eventHandler]);
+			return;
 		}
+		/*
 		const index = this.handlers[eventName].indexOf(eventHandler);
 		if (index >= 0) {
 			if (DEBUG_EVENT_MANAGER) console.log('Event listener already registered.');
 			return;
-		}
-		return this.handlers[eventName].push(eventHandler);
+		}*/
+		const handlers = this.handlers.get(eventName);
+		handlers.push(eventHandler);
 	}
 
 	removeEventListener(eventName, eventHandler) {
-		if (!this.handlers[eventName]) {
-			this.handlers[eventName] = [];
+		if (!this.handlers.has(eventName)) {
+			return;
 		}
-		const index = this.handlers[eventName].indexOf(eventHandler);
+		const handlers = this.handlers.get(eventName);
+		const index = handlers.indexOf(eventHandler);
+		if (index === 0 && handlers.length === 0) {
+			this.handlers.delete(eventName);
+			return;
+		}
 		if (index >= 0) {
-			this.handlers[eventName].splice(index, 1);
+			handlers.splice(index, 1);
 		} else {
-			if (DEBUG_EVENT_MANAGER) console.log('Event listener cannot be removed - not found.');
+			console.warn(`Event listener '${eventName}' cannot be removed - not found.`);
 		}
 	}
 
 	triggerEvent(eventName, param) {
-		if (!this.handlers[eventName]) {
+		if (!this.handlers.has(eventName)) {
 			return;
 		}
-		const handlers = [...this.handlers[eventName]];
-		handlers.forEach((item) => item(param));
+		const handlers = [...this.handlers.get(eventName)];
+		for (let i = 0, max = handlers.length; i < max; i++) {
+			handlers[i](param);
+		}
 	}
 
 	reset() {
-		this.handlers = [];
+		this.handlers.clear();
 	}
 
 }
