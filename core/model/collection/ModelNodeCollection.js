@@ -36,21 +36,6 @@ export default class ModelNodeCollection extends ObjectModel {
 		}
 
 		this.selectedNode = this.addProperty('selectedNode', new NullableNode(null, false));
-
-		this.addEventListener('drag-start', (child) => {
-			this.selectedNode.set(child);
-		});
-		this.addEventListener('drag-drop', (child) => {
-			const node = this.selectedNode.get();
-			const startIndex = this.indexOf(node);
-			const targetIndex = this.indexOf(child);
-			if (startIndex === targetIndex) {
-				return;
-			}
-			this.remove(node);
-			this.insert(node, targetIndex);
-			this.selectedNode.set(node);
-		});
 	}
 
 	asArray() {
