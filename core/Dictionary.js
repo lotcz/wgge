@@ -7,61 +7,54 @@ import ChangeEvent from "./model/event/ChangeEvent";
 export default class Dictionary extends NodeWithEvents {
 
 	/**
-	 * @type object
+	 * @type Map
 	 */
-	keyValues;
-
-	constructor(init = {}) {
-		super();
-		this.keyValues = init;
-	}
+	map= new Map();
 
 	get(key) {
-		return this.keyValues[key];
+		return this.map.get(key);
 	}
 
 	exists(key) {
-		return (this.keyValues[key] !== undefined);
-	}
-
-	add(key, value = null) {
-		return this.set(key, value);
-	}
-
-	set(key, value = null) {
-		const old = this.get(key);
-		const existed = old !== undefined;
-		this.keyValues[key] = value;
-
-		if (existed) {
-			this.triggerEvent('set', new ChangeEvent(value, old, key));
-		} else {
-			this.triggerEvent('add', new ChangeEvent(value, undefined, key));
-		}
-		return value;
+		return this.map.has(key);
 	}
 
 	remove(key) {
 		if (!this.exists(key)) return;
-
 		const element = this.get(key);
-		delete this.keyValues[key];
+		this.map.delete(key);
 		this.triggerEvent('remove', new ChangeEvent(undefined, element, key));
 		return element;
+	}
+
+	set(key, value = undefined) {
+		const old = this.get(key);
+		const existed = old !== undefined;
+
+		if (existed) {
+			if (value === undefined) {
+				return this.remove(key);
+			}
+			this.map.set(key, value);
+			this.triggerEvent('set', new ChangeEvent(value, old, key));
+		} else {
+			this.map.set(key, value);
+			this.triggerEvent('add', new ChangeEvent(value, undefined, key));
+		}
+
+		return value;
+	}
+
+	add(key, value = undefined) {
+		return this.set(key, value);
 	}
 
 	rename(key, newKey) {
 		this.add(newKey, this.remove(key));
 	}
 
-	reset() {
-		const keys = this.keys();
-		keys.forEach((key) => this.remove(key));
-		this.keyValues = {};
-	}
-
 	count() {
-		return this.keys().length;
+		return this.map.size;
 	}
 
 	isEmpty() {
@@ -69,13 +62,19 @@ export default class Dictionary extends NodeWithEvents {
 	}
 
 	keys() {
-		return Object.keys(this.keyValues);
+		return Array.from(this.map.keys());
+	}
+
+	reset() {
+		const keys = this.keys();
+		for (let i = 0, max = keys.length; i < max; i++) {
+			this.remove(keys[i]);
+		}
+		this.map = new Map();
 	}
 
 	forEach(func) {
-		for (let key in this.keyValues) {
-			func(key, this.keyValues[key]);
-		}
+		this.map.forEach((value, key) => func(key, value));
 	}
 
 }
