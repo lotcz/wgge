@@ -13,6 +13,11 @@ export default class ControlsModel extends ObjectModel {
 	/**
 	 * @type BoolValue
 	 */
+	logPressedKeys;
+
+	/**
+	 * @type BoolValue
+	 */
 	isMouseOver;
 
 	/**
@@ -20,14 +25,24 @@ export default class ControlsModel extends ObjectModel {
 	 */
 	mouseCoordinates;
 
+	/**
+	 * @type BoolValue
+	 */
 	mouseDownLeft;
+
+	/**
+	 * @type BoolValue
+	 */
 	mouseDownRight;
+
 	leftClickTime;
+
 	rightClickTime;
 
 	constructor() {
 		super();
 
+		this.logPressedKeys = this.addProperty('logPressedKeys', new BoolValue(false));
 		this.isMouseOver = this.addProperty('isMouseOver', new BoolValue(false));
 		this.mouseCoordinates = this.addProperty('mouseCoordinates', new Vector2());
 		this.mouseDownLeft = this.addProperty('mouseDownLeft', new BoolValue(false));

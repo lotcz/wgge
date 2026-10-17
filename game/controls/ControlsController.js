@@ -1,6 +1,7 @@
 import ControllerBase from "../../core/controller/ControllerBase";
 
 export default class ControlsController extends ControllerBase {
+
 	dom;
 
 	/**
@@ -29,7 +30,7 @@ export default class ControlsController extends ControllerBase {
 
 	onKeyDown(event) {
 		const key = event.keyCode ? event.keyCode : event.charCode;
-		if (this.game.isInDebugMode.get()) console.log(key);
+		if (this.model.logPressedKeys.get()) console.log(key);
 		this.model.triggerEvent(`key-down-${key}`);
 		this.model.triggerEvent(`key-down`, key);
 	}
@@ -47,7 +48,6 @@ export default class ControlsController extends ControllerBase {
 				this.model.triggerEvent(`key-up-${key}`);
 				this.model.triggerEvent(`key-up`, key);
 		}
-
 	}
 
 	onMouseMove(e) {
