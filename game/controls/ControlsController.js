@@ -30,7 +30,7 @@ export default class ControlsController extends ControllerBase {
 
 	onKeyDown(event) {
 		const key = event.keyCode ? event.keyCode : event.charCode;
-		if (this.model.logPressedKeys.get()) console.log(key);
+		if (this.model.logPressedKeys.get()) console.log(`key pressed: ${key}`);
 		this.model.triggerEvent(`key-down-${key}`);
 		this.model.triggerEvent(`key-down`, key);
 	}
