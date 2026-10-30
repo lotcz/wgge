@@ -4,18 +4,32 @@ import ModelBase from "./ModelBase";
 
 export default class ObjectModel extends ModelBase {
 
+	propagateChangeEvent = false;
+
 	/**
 	 * @type {Dictionary<ModelBase>}
 	 */
 	properties;
 
-	constructor(persistent = true) {
+	constructor(persistent = true, propagateChangeEvent = false) {
 		super(persistent);
+
+		this.propagateChangeEvent = propagateChangeEvent;
 
 		this.properties = new Dictionary();
 		this.properties.addEventListener('add', (e) => this.propertyAdded(e.key, e.value));
 		this.properties.addEventListener('remove', (e) => this.propertyRemoved(e.key, e.old));
 		this.properties.addEventListener('set', (e) => this.propertySet(e.key, e.old, e.value));
+
+		this.propertyValueChangedHandler = () => this.triggerEvent('change');
+	}
+
+	subscribeToOnChangeEvent(property) {
+		property.addEventListener('change', this.propertyValueChangedHandler);
+	}
+
+	unsubscribeFromOnChangeEvent(property) {
+		property.removeEventListener('change', this.propertyValueChangedHandler);
 	}
 
 	addProperty(name, property) {
@@ -28,11 +42,13 @@ export default class ObjectModel extends ModelBase {
 	propertyAdded(name, property) {
 		this.makeDirty();
 		this.subscribeToOnDirtyEvent(property);
+		if (this.propagateChangeEvent) this.subscribeToOnChangeEvent(property);
 	}
 
 	propertyRemoved(name, property) {
 		this.makeDirty();
 		this.unsubscribeFromOnDirtyEvent(property);
+		this.unsubscribeFromOnChangeEvent(property);
 	}
 
 	propertySet(name, oldProperty, newProperty) {

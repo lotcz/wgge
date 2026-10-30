@@ -6,6 +6,8 @@ import {EVENT_REMOVE_ME} from "../ModelBase";
 
 export default class ModelNodeCollection extends ObjectModel {
 
+	propagateChangeEvent = false;
+
 	/**
 	 * @type Collection
 	 */
@@ -18,9 +20,10 @@ export default class ModelNodeCollection extends ObjectModel {
 	 */
 	selectedNode;
 
-	constructor(nodeFactory = null, persistent = true) {
+	constructor(nodeFactory = null, persistent = true, propagateChangeEvent = false) {
 		super(persistent);
 
+		this.propagateChangeEvent = propagateChangeEvent;
 		this.nodeFactory = nodeFactory;
 		this.children = new Collection();
 		const events = ['add', 'insert', 'remove', 'change'];
@@ -34,7 +37,7 @@ export default class ModelNodeCollection extends ObjectModel {
 			}
 			this.remove(ch);
 		}
-
+		this.childChangedHandler = () => this.triggerEvent('change');
 		this.selectedNode = this.addProperty('selectedNode', new NullableNode(null, false));
 	}
 
@@ -184,6 +187,7 @@ export default class ModelNodeCollection extends ObjectModel {
 		this.makeDirty();
 		this.subscribeToOnDirtyEvent(child);
 		child.addEventListener(EVENT_REMOVE_ME, this.childRequestedRemoveHandler);
+		if (this.propagateChangeEvent) child.addEventListener('change', this.childChangedHandler);
 	}
 
 	/**
@@ -194,6 +198,7 @@ export default class ModelNodeCollection extends ObjectModel {
 		this.makeDirty();
 		this.unsubscribeFromOnDirtyEvent(child);
 		child.removeEventListener(EVENT_REMOVE_ME, this.childRequestedRemoveHandler);
+		child.removeEventListener('change', this.childChangedHandler);
 		if (this.selectedNode.equalsTo(child)) {
 			this.selectedNode.set(null);
 		}
